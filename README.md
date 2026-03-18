@@ -1,4 +1,4 @@
-# StylehubReact
+# Stylehub
 The frontend react app of the stylehub application
 
 Instructions for using git
@@ -10,7 +10,7 @@ Starting the project
 
 3 Type: Git: Clone
 
-4 Paste the repository URL: https://github.com/jerinmt/StylehubReact.git
+4 Paste the repository URL: https://github.com/jerinmt/Stylehub.git
 
 5 Choose a folder where you want to save it
 
