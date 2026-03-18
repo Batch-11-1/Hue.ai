@@ -1,5 +1,5 @@
 # Stylehub
-The frontend react app of the stylehub application
+Stylehub - an application to style(CSS) webpages in html, ejs, jsx files through AI.
 
 Instructions for using git
 
