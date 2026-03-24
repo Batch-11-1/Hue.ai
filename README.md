@@ -26,18 +26,14 @@ Working on the project
   b)git checkout -b my-feature-name
 
   
-2 Go to Source Control tab (left sidebar)
 
-  a) Stage files (+ icon)
-  
-  b)Write commit message
-  
-  c)Click ✔️ (commit)
+2 After entering your code
 
+  a) In VS code terminal type - git add .
   
-3 In VScode terminal
+  b)git commit -m "Enter a description"
 
-  git push origin my-feature-name
+  c) git push origin my-feature-name
 
   
 4 Go to the repo on GitHub:
