@@ -1,111 +1,171 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --bg-main: #0c0c0c;
+  --bg-surface: #151515;
+  --bg-surface-2: #1d1d1d;
+  --yellow: #ffd400;
+  --yellow-soft: #ffdf4d;
+  --text-main: #f8f8f8;
+  --text-muted: #b9b9b9;
+  --border: #2d2d2d;
+  --shadow: 0 14px 38px rgba(0, 0, 0, 0.45);
+  --radius: 16px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+html,
+body,
+#root {
+  min-height: 100%;
 }
 
 body {
   margin: 0;
+  font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text-main);
+  background:
+    radial-gradient(circle at top right, rgba(255, 212, 0, 0.12), transparent 35%),
+    radial-gradient(circle at bottom left, rgba(255, 212, 0, 0.08), transparent 38%),
+    var(--bg-main);
+  line-height: 1.5;
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Page shell for App/AboutUs/Input routes */
+main,
+section,
+.page,
+.page-container {
+  width: min(92vw, 1024px);
+  margin: clamp(1rem, 4vw, 3rem) auto;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, var(--bg-surface), var(--bg-surface-2));
+  box-shadow: var(--shadow);
 }
 
 h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+h2,
+h3 {
+  margin-top: 0;
+  color: var(--yellow);
+  letter-spacing: 0.4px;
 }
 
+/* Since current pages contain only h1, center and highlight it */
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+  margin-bottom: 0.5rem;
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(255, 212, 0, 0.25);
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+p,
+label,
+small,
+span {
+  color: var(--text-muted);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+a {
+  color: var(--yellow-soft);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--yellow);
+}
+
+/* Reusable modern card style */
+.card {
+  background: #101010;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 4px);
+  padding: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* Form and input styling for Input.jsx */
+form {
+  display: grid;
+  gap: 1rem;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  border-radius: 10px;
+  border: 1px solid #3a3a3a;
+  background: #0f0f0f;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #888;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(255, 212, 0, 0.2);
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1.1rem;
+  background: var(--yellow);
+  color: #111;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+button:hover {
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  main,
+  section,
+  .page,
+  .page-container {
+    width: min(94vw, 1024px);
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  h1 {
+    font-size: clamp(1.55rem, 7vw, 2.25rem);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 0.95rem;
+  }
+
+  button {
+    width: 100%;
+  }
 }
