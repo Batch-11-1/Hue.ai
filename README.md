@@ -53,20 +53,20 @@ Before working on the project
 
 Duties
 Front end
-  Pages
-    Landing page - Shino
-    Input page - Noufa
-    Output page - Archana
-    About us page - Karthika
-    Result page - Devika
-    Error page - Vivek
+  Pages (Client folder)
+    Landing page - Shino -- App.jsx
+    Input page - Noufa -- Input.jsx
+    Output page - Archana -- Output.jsx
+    About us page - Karthika -- AboutUs.jsx
+    Result page - Devika -- Result.jsx
+    Error page - Vivek -- ErrorPage.jsx
 
   Styling
-    Afsel
-    Sahad
+    Afsel -- index.css
+    Sahad -- index.css
 
-Back end
-  Initial prompt engineering - Renjeesh
-  Preview build - Ananda
-  Adjust prompt - Alfin
-  Repeat prompt engineering - Gopika
+Back end (Server folder)
+  Initial prompt engineering - Renjeesh -- inputController.js
+  File download - Ananda -- fileController.js
+  Adjust prompt - Alfin -- adjustController.js
+  Repeat prompt - Gopika -- repeatController.js
