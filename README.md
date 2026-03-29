@@ -16,7 +16,7 @@ Starting the project
 
 6 Click Open
 
-7 In terminal, type: npm install
+7 Go to the folder whether it is server or client and open stylehub folder. In terminal, type: npm install
 
 
 Before working on the project
@@ -31,7 +31,7 @@ Before working on the project
 
 2 After entering your code
 
-  a) In VS code terminal type - git add .
+  a) In cursor terminal type - git add .
   
   b)git commit -m "Enter a description"
 
