@@ -6,6 +6,9 @@ const indexRouter = require("./routes/indexRouter");
 //initialisations
 const app = express();
 
+// Parse JSON bodies (needed for axios requests)
+app.use(express.json({ limit: "2mb" }));
+
 //for form values
 app.use(express.urlencoded({extended: true}));
 
