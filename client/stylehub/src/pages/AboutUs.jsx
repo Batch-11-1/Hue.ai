@@ -3,33 +3,98 @@ import MemberCard from '../components/MemberCard'
 function AboutUs() {
   const members = [
     {
-      name: 'Team Member 1',
-      role: 'Frontend Developer',
-      qualification: 'BSc in Computer Science',
-      github: 'https://github.com/member1',
-      linkedin: 'https://www.linkedin.com/in/member1'
+      name: 'Renjeesh R.S (creator)',
+      role: 'Backend - Express',
+      qualification: 'Mern Stack Developer',
+      github: 'https://github.com/renjeesh-rs',
+      linkedin: 'https://www.linkedin.com/in/renjeesh-r-s-5408b7381/'
     },
     {
-      name: 'Team Member 2',
-      role: 'Backend Developer',
-      qualification: 'BSc in Software Engineering',
-      github: 'https://github.com/member2',
-      linkedin: 'https://www.linkedin.com/in/member2'
+      name: 'Jerin Moni Thomas',
+      role: 'Web Architecture',
+      qualification: 'Java Developer',
+      github: 'https://github.com/jerinmt',
+      linkedin: 'https://www.linkedin.com/in/jerin-moni-thomas-software-developer'
+    },
+
+    {
+      name: 'Gopika.Gopakumar',
+      role: 'Backend - Express',
+      qualification: 'Mern Stack Developer',
+      github: 'https://github.com/Gopi121202',
+      linkedin: 'https://www.linkedin.com/in/gopika-gopakumar1202'
     },
     {
-      name: 'Team Member 3',
-      role: 'UI/UX Designer',
-      qualification: 'Diploma in Interaction Design',
-      github: 'https://github.com/member3',
-      linkedin: 'https://www.linkedin.com/in/member3'
+      name: 'Alfin Muhammed',
+      role: 'Backend - Express',
+      qualification: 'Mern Stack Developer',
+      github: 'https://github.com/Alfin77',
+      linkedin: 'https://www.linkedin.com/in/alfin-muhammed-n-s-8aa85831b'
     },
     {
-      name: 'Team Member 4',
-      role: 'Project Manager',
-      qualification: 'BBA in Information Systems',
+      name: 'Ananda.M.P',
+      role: 'Backend - Express',
+      qualification: 'Mern Stack Developer',
+      github: 'https://github.com/anandapavanan',
+      linkedin: 'www.linkedin.com/in/ananda-m-p-b7989826b'
+    },
+    {
+      name: 'Archana.R',
+      role: 'Frontend - React',
+      qualification: 'Python Developer',
+      github: 'https://github.com/archanarx',
+      linkedin: 'https://www.linkedin.com/in/archanaa-r-/'
+    },
+    {
+      name: 'Karthika.K.S',
+      role: 'Frontend - React',
+      qualification: 'Python Developer',
+      github: 'https://github.com/karthikasuresh31-subith',
+      linkedin: 'https://www.linkedin.com/in/karthika-k-s-53b074381'
+    },
+    {
+      name: 'Shino.S.B',
+      role: 'Frontend - React',
+      qualification: 'Mern Stack Developer',
+      github:  'https://github.com/shinolulu69-code',
+      linkedin: 'https://www.linkedin.com/in/shino-s-b-0371923b6'
+    },
+    {
+      name: 'Noufa.S',
+      role: 'Frontend - React',
+      qualification: 'Mern Stack Developer',
+      github: 'https://github.com/noufasaji-maker',
+      linkedin: 'www.linkedin.com/in/noufa-sajna-291649380'
+    },
+    {
+      name: 'Devika',
+      role: 'Frontend - React',
+      qualification: 'Mern Stack Developer',
+      github: 'https://github.com/Devikanavakumar',
+      linkedin: 'https://www.linkedin.com/in/devika-navakumar-b55131300
+    },
+    {
+      name: 'Vivek.V',
+      role: 'Frontend - React',
+      qualification: 'Java Developer',
+      github: 'https://github.com/vivi241',
+      linkedin: 'https://www.linkedin.com/in/vivek-v-591763251'
+    },
+    {
+      name: 'Afsal.A',
+      role: 'UX/UI Designer',
+      qualification: 'Mern Stack Developer',
+      github: 'https://github.com/afsalazeez29-code',
+      linkedin: 'https://www.linkedin.com/in/afsal-a-azeez29'
+    },
+    {
+      name: 'Sahad',
+      role: 'UX/UI Designer',
+      qualification: 'Python Fullstack Developer',
       github: 'https://github.com/member4',
       linkedin: 'https://www.linkedin.com/in/member4'
     }
+
   ]
 
   return (

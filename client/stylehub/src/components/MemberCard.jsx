@@ -2,8 +2,8 @@ function MemberCard({ name, role, qualification, github, linkedin }) {
   return (
     <div>
       <h2>{name}</h2>
-      <p>Role: {role}</p>
-      <p>Qualification: {qualification}</p>
+      <p>{qualification}</p>
+      <p>Project Role: {role}</p>
       <p>
         GitHub: <a href={github}>{github}</a>
       </p>
