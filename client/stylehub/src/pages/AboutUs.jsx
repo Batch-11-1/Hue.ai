@@ -1,6 +1,8 @@
 /*
 This page should show the a small information about our team and cards for each team member with their name, bio/qualification, project role and links to github and linkedin profiles.
 */
+import Header from './components/Header'
+import Footer from './components/Footer'
 import MemberCard from '../components/MemberCard'
 
 function AboutUs() {
@@ -109,6 +111,7 @@ function AboutUs() {
 
   return (
     <>
+      <Header />
       <h1>About Us page</h1>
       <h1>About Us</h1>
       <p>
@@ -124,6 +127,7 @@ function AboutUs() {
           linkedin={member.linkedin}
         />
       ))}
+      <Footer />
     </>
   )
 }

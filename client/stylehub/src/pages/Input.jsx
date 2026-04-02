@@ -12,7 +12,8 @@ While waiting for the response there should be a loading animation to indicate t
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import '../App.css'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 function Input() {
   const navigate = useNavigate()
@@ -270,18 +271,20 @@ function Input() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        padding: '2.5rem 1.5rem',
-        background:
-          'radial-gradient(circle at top left, #eef2ff 0, #ffffff 45%), radial-gradient(circle at bottom right, #fef3c7 0, #ffffff 55%)',
-      }}
-    >
-      <form
+    <>
+      <Header />
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          padding: '2.5rem 1.5rem',
+          background:
+            'radial-gradient(circle at top left, #eef2ff 0, #ffffff 45%), radial-gradient(circle at bottom right, #fef3c7 0, #ffffff 55%)',
+        }}
+      >
+        <form
         onSubmit={handleSubmit}
         style={{
           width: '100%',
@@ -785,7 +788,9 @@ function Input() {
           `}
         </style>
       </form>
-    </div>
+      </div>
+      <Footer />
+    </>
   )
 }
 

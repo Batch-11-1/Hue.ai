@@ -5,6 +5,8 @@ At the beginning of the page loading, we will show a loading animation for few s
 import axios from 'axios'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Header from './components/Header'
+import Footer from './components/Footer'
 
 function App() {
   const navigate = useNavigate()
@@ -63,6 +65,7 @@ function App() {
     <div
       id="center"
     >
+      <Header />
       <h1>StyleHub</h1>
       <p>
         Upload your HTML and describe your design preferences. StyleHub will help generate a polished,
@@ -92,6 +95,7 @@ function App() {
           About Us
         </button>
       </div>
+      <Footer />
     </div>
   )
 }

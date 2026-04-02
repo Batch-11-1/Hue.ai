@@ -2,6 +2,11 @@
 There should also be a button to finalize the style that redirects the user to result page along with the final html code as a prop.
 */
 import "../App.css"
+import { useState, useEffect } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
+import axios from "axios"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
 
 function Output() {
   // Assumptions based on your description:
@@ -119,8 +124,10 @@ function Output() {
   }, [])
 
   return (
-    <div>
-      <h1>Output page</h1>
+    <>
+      <Header />
+      <div>
+        <h1>Output page</h1>
 
       <div role="group" aria-label="Preview view mode">
         <button type="button" onClick={() => setViewMode("laptop")}>
@@ -183,7 +190,9 @@ function Output() {
           Tip: use the mobile/laptop toggle to preview layout changes at different sizes.
         </div>
       </div>
-    </div>
+      </div>
+      <Footer />
+    </>
   )
 }
 

@@ -9,6 +9,8 @@ import '../App.css'
 import axios from 'axios'
 import { useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 const RESTYLE_ENDPOINT = 'http://localhost:3001/api/restyle' // TODO: change to your backend route
 
@@ -131,8 +133,10 @@ function Result() {
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Final result</h1>
+    <>
+      <Header />
+      <div style={{ padding: 20 }}>
+        <h1>Final result</h1>
 
       {!canDownload ? (
         <div style={{ color: 'crimson' }}>
@@ -190,7 +194,9 @@ function Result() {
           Restart Styling
         </button>
       </section>
-    </div>
+      </div>
+      <Footer />
+    </>
   )
 }
 

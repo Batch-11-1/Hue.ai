@@ -1,7 +1,8 @@
 /*This page is used to display an error message when the user tries to access a page that does not exist. And also to handle any other errors that may occur in the application.
 */
-import '../App.css'
 import { Link, isRouteErrorResponse, useRouteError } from "react-router-dom";
+import Header from './components/Header'
+import Footer from './components/Footer'
 
 function ErrorPage() {
   const error = useRouteError();
@@ -25,6 +26,7 @@ function ErrorPage() {
 
   return (
     <>
+      <Header />
       <h1>{status === 404 ? "404 - Page Not Found" : "Error"}</h1>
       <p>{message}</p>
       <Link to="/">Go back home</Link>
@@ -32,6 +34,7 @@ function ErrorPage() {
       {import.meta.env.DEV && status !== 404 ? (
         <pre style={{ whiteSpace: "pre-wrap" }}>{String((error && error.stack) || error)}</pre>
       ) : null}
+      <Footer />
     </>
   )
 }
