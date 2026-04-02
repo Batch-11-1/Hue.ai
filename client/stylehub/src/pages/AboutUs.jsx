@@ -3,7 +3,7 @@ import MemberCard from '../components/MemberCard'
 function AboutUs() {
   const members = [
     {
-      name: 'Renjeesh R.S (creator)',
+      name: 'Renjeesh R.S (Creator)',
       role: 'Backend - Express',
       qualification: 'Mern Stack Developer',
       github: 'https://github.com/renjeesh-rs',
@@ -12,7 +12,7 @@ function AboutUs() {
     {
       name: 'Jerin Moni Thomas',
       role: 'Web Architecture',
-      qualification: 'Java Developer',
+      qualification: 'Java Fullstack Developer',
       github: 'https://github.com/jerinmt',
       linkedin: 'https://www.linkedin.com/in/jerin-moni-thomas-software-developer'
     },
@@ -41,14 +41,14 @@ function AboutUs() {
     {
       name: 'Archana.R',
       role: 'Frontend - React',
-      qualification: 'Python Developer',
+      qualification: 'Python Fullstack Developer',
       github: 'https://github.com/archanarx',
       linkedin: 'https://www.linkedin.com/in/archanaa-r-/'
     },
     {
       name: 'Karthika.K.S',
       role: 'Frontend - React',
-      qualification: 'Python Developer',
+      qualification: 'Python Fullstack Developer',
       github: 'https://github.com/karthikasuresh31-subith',
       linkedin: 'https://www.linkedin.com/in/karthika-k-s-53b074381'
     },
@@ -71,26 +71,33 @@ function AboutUs() {
       role: 'Frontend - React',
       qualification: 'Mern Stack Developer',
       github: 'https://github.com/Devikanavakumar',
-      linkedin: 'https://www.linkedin.com/in/devika-navakumar-b55131300
+      linkedin: 'https://www.linkedin.com/in/devika-navakumar-b55131300'
     },
     {
       name: 'Vivek.V',
       role: 'Frontend - React',
-      qualification: 'Java Developer',
+      qualification: 'Java Fullstack Developer',
       github: 'https://github.com/vivi241',
       linkedin: 'https://www.linkedin.com/in/vivek-v-591763251'
     },
     {
       name: 'Afsal.A',
-      role: 'UX/UI Designer',
+      role: 'UI/UX Designer',
       qualification: 'Mern Stack Developer',
       github: 'https://github.com/afsalazeez29-code',
       linkedin: 'https://www.linkedin.com/in/afsal-a-azeez29'
     },
     {
       name: 'Sahad',
-      role: 'UX/UI Designer',
+      role: 'UI/UX Designer',
       qualification: 'Python Fullstack Developer',
+      github: 'https://github.com/member4',
+      linkedin: 'https://www.linkedin.com/in/member4'
+    },
+    {
+      name: 'Ijas Faizy',
+      role: 'Frontend - React',
+      qualification: 'Mern Stack Developer',
       github: 'https://github.com/member4',
       linkedin: 'https://www.linkedin.com/in/member4'
     }
