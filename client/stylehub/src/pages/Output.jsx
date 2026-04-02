@@ -18,6 +18,7 @@ function Output() {
   // implemented to match the intended behavior.
 
   const location = useLocation()
+  const navigate = useNavigate()
   const initialHtml = typeof location?.state?.html === "string" ? location.state.html : ""
 
   const API_BASE_URL =
@@ -110,6 +111,8 @@ function Output() {
       const msg =
         typeof res.data === "string" ? res.data : res.data?.message || "Confirmed."
       setStatusMessage(msg)
+      // After confirming, navigate to result page with the HTML
+      navigate('/result', { state: { html: previewHtml } })
     } catch (e) {
       setError(e?.message || "Failed to confirm file.")
     } finally {
@@ -182,7 +185,7 @@ function Output() {
             onClick={handleConfirm}
             disabled={loadingConfirm || !previewHtml}
           >
-            {loadingConfirm ? "Confirming..." : "Confirm"}
+            {loadingConfirm ? "Finalizing..." : "Finalize"}
           </button>
         </div>
 
