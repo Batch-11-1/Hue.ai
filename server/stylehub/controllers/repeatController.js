@@ -1,59 +1,33 @@
-/* the req.body contatins two html files already styled and the user input to repeat the styling of one file to the other.
+const { callGemini } = require('../utils/geminiUtils');
 
-prompt example: "Repeat the styling of file1.html to file2.html, only change the content but keep the same structure and styling. Respond with the new html file with the css added internally in the html file."
-
-Use axios to send the prompt to the AI model, mention to respond with the css added internally in the html file and receive the generated html-CSS code.
-Send the huggingface API token in the request header for authentication as an environment variable.
-
-Finally, send the generated code back to the client as a response.
-*/
-const axios = require("axios");
-
-function pickFirstString(obj, keys) {
-  if (!obj || typeof obj !== "object") return "";
-  for (const k of keys) {
-    const v = obj[k];
-    if (typeof v === "string" && v.trim()) return v.trim();
+const pickFirstString = (obj, keys) => {
+  if (!obj || typeof obj !== 'object') return null;
+  for (const key of keys) {
+    const value = obj[key];
+    if (typeof value === 'string' && value.trim().length > 0) return value;
   }
-  return "";
-}
-
-function extractGeneratedText(hfData) {
-  // Common HF Inference shapes:
-  // - [{ generated_text: "..." }]
-  // - { generated_text: "..." }
-  // - { error: "...", estimated_time: ... }
-  if (!hfData) return "";
-
-  if (Array.isArray(hfData)) {
-    const first = hfData[0];
-    if (first && typeof first.generated_text === "string") return first.generated_text;
-    if (first && typeof first.text === "string") return first.text;
-  }
-
-  if (typeof hfData === "object") {
-    if (typeof hfData.generated_text === "string") return hfData.generated_text;
-    if (typeof hfData.text === "string") return hfData.text;
-  }
-
-  return "";
-}
+  return null;
+};
 
 const repeatPrompt = async (req, res, next) => {
   try {
     console.log("repeatController.repeatPrompt called");
 
-    const token = process.env.HUGGINGFACE_API_TOKEN || process.env.HF_API_TOKEN;
-    if (!token) {
+    const hfToken = process.env.HUGGINGFACE_API_TOKEN || process.env.HF_API_TOKEN;
+    const googleApiKey = process.env.GOOGLE_API_KEY;
+
+    if (!hfToken && !googleApiKey) {
       return res
         .status(500)
-        .json({ error: "Missing Hugging Face API token in environment variables." });
+        .json({ error: "Missing AI API token in environment variables. Set GOOGLE_API_KEY." });
     }
 
     const model =
+      process.env.GEMINI_MODEL ||
+      process.env.GENERATIVE_MODEL ||
       process.env.HUGGINGFACE_MODEL ||
       process.env.HF_MODEL ||
-      "mistralai/Mistral-7B-Instruct-v0.2";
+      "gemini-2.5-flash";
 
     const styledHtml = pickFirstString(req.body, [
       "styledHtml",
@@ -117,36 +91,14 @@ const repeatPrompt = async (req, res, next) => {
       .filter(Boolean)
       .join("\n");
 
-    const url = `https://api-inference.huggingface.co/models/${encodeURIComponent(model)}`;
-
-    const hfResponse = await axios.post(
-      url,
-      {
-        inputs: prompt,
-        parameters: {
-          max_new_tokens: Number(process.env.HF_MAX_NEW_TOKENS || 1800),
-          temperature: Number(process.env.HF_TEMPERATURE || 0.2),
-          return_full_text: false,
-        },
-        options: { wait_for_model: true },
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        timeout: Number(process.env.HF_TIMEOUT_MS || 120000),
-      }
-    );
-
-    const generated = extractGeneratedText(hfResponse.data)?.trim();
+    const generated = await callGemini(prompt, {
+      maxOutputTokens: Number(process.env.GEMINI_MAX_OUTPUT_TOKENS || 1800),
+      temperature: Number(process.env.GEMINI_TEMPERATURE || 0.2)
+    });
     if (!generated) {
-      const errMsg =
-        (hfResponse.data && hfResponse.data.error) ||
-        "No generated HTML returned from the model.";
+      const errMsg = "No generated HTML returned from the model.";
       return res.status(502).json({
         error: errMsg,
-        details: hfResponse.data,
       });
     }
 
@@ -160,7 +112,7 @@ const repeatPrompt = async (req, res, next) => {
       return res.status(status).json({
         error:
           (data && data.error) ||
-          `Hugging Face request failed with status ${status}.`,
+          `Gemini request failed with status ${status}.`,
         details: data,
       });
     }

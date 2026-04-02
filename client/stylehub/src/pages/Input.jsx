@@ -84,14 +84,22 @@ function Input() {
     try {
       setIsSubmitting(true)
 
+      // Read the file content
+      const htmlContent = await new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = (e) => resolve(e.target.result)
+        reader.onerror = reject
+        reader.readAsText(file)
+      })
+
       const formData = new FormData()
-      formData.append('file', file)
+      formData.append('html', htmlContent)
       formData.append('layout', selectedLayout)
       formData.append('colors', JSON.stringify(colors))
       formData.append('font', selectedFont)
 
       // TODO: replace with real backend endpoint
-      const response = await axios.post('/api/analyze-layout', formData, {
+      const response = await axios.post('/api/initiate', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
