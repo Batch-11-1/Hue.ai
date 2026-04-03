@@ -13,11 +13,11 @@ Concept - Renjeesh
 
 Project management - Jerin
 
-Front end - React
+Front end (React)
     Archana, Devika, Ijas, Karthika, Noufa, Shino, Vivek
 
-Front end - CSS
+Front end (CSS)
     Afsel, Sahad
 
-Back end - Express
+Back end (Express)
     Ananda, Alfin, Gopika
