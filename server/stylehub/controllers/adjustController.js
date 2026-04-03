@@ -37,15 +37,12 @@ const adjustPrompt = async (req, res) => {
       });
     }
 
-    const effectiveSuggestion =
-      suggestion || "Make the background color of the header blue.";
-
     // Important: request the model to return ONLY the updated HTML document,
     // with CSS embedded internally so we can send it straight to the client.
     const prompt = [
       "You are a helpful assistant that edits HTML and embedded CSS.",
       "Task:",
-      `Suggestion: ${effectiveSuggestion}`,
+      `Suggestion: ${suggestion}`,
       "HTML file:",
       html,
       "",

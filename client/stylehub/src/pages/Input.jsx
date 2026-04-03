@@ -1,15 +1,5 @@
-/*In this page the user should be able to upload an html/ejs/jsx file.
-Then there should be 3 questions that the user should answer to help the AI understand the design of the page. The questions are:
-1. which layout want to use? There should be cards that the user can choose from. The cards should have a title and a diagram of the layout.
-2. which color scheme to use? There should be option to choose upto 4 colors as the color scheme of the site. There should be a color selector and a plus button if the user wants to add more colors.
-3. which font to use? There should be a dropdown menu with different font options. The user should be able to see a preview of the font before selecting it.
-The layout images are in src/assets/pagelayouts folder
 
-Once selected there should be an axios request to backend(for now use a dummy endpoint) to send the file and the answers to the questions. Once the response is received the user should be redirected to the output page along with the response data.
-
-While waiting for the response there should be a loading animation to indicate that the AI is processing the request.
-*/
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Header from '../components/Header'
@@ -20,10 +10,16 @@ function Input() {
 
   const [file, setFile] = useState(null)
   const [selectedLayout, setSelectedLayout] = useState(null)
-  const [colors, setColors] = useState(['#4f46e5', '#f97316'])
+  const [colors, setColors] = useState(['#323233', '#eeeeee'])
   const [selectedFont, setSelectedFont] = useState('Inter, system-ui, sans-serif')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
+
+  const backendBaseUrl = useMemo(() => {
+    const fromEnv = import.meta.env.VITE_BACKEND_BASE_URL
+    const base = fromEnv || 'http://localhost:3000'
+    return String(base).replace(/\/$/, '')
+  }, [])
 
   const layoutOptions = [
     { id: 'assymetricallayout', title: 'assymetricallayout', image: new URL('../assets/pagelayouts/assymetricallayout.jpeg', import.meta.url).href },
@@ -53,7 +49,7 @@ function Input() {
 
   const handleAddColor = () => {
     if (colors.length >= 4) return
-    setColors([...colors, '#22c55e'])
+    setColors([...colors, '#ff11d7'])
   }
 
   const handleColorChange = (index, value) => {
@@ -92,25 +88,18 @@ function Input() {
         reader.readAsText(file)
       })
 
-      const formData = new FormData()
-      formData.append('html', htmlContent)
-      formData.append('layout', selectedLayout)
-      formData.append('colors', JSON.stringify(colors))
-      formData.append('font', selectedFont)
+      const payload = {
+        html: htmlContent,
+        layout: selectedLayout,
+        colorScheme: colors,
+        fontStyle: selectedFont,
+      }
 
-      // TODO: replace with real backend endpoint
-      const response = await axios.post('/api/initiate', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      const response = await axios.post(`${backendBaseUrl}/initiate`, payload)
 
       navigate('/output', {
         state: {
-          result: response.data,
-          layout: selectedLayout,
-          colors,
-          font: selectedFont,
+          result: response.data
         },
       })
     } catch (err) {
@@ -240,10 +229,10 @@ function Input() {
         {/* Font selection */}
         <section>
           <h2>
-            4. Which font style should we use?
+            4. Which font group should we use?
           </h2>
           <p>
-            Choose a primary font. Preview each style below before you commit.
+            Choose a primary font group.
           </p>
 
           <select
@@ -259,11 +248,21 @@ function Input() {
 
           <div>
             {fontOptions.map((font) => {
+              const isActive = selectedFont === font.css
               return (
                 <button
                   key={font.id}
                   type="button"
                   onClick={() => setSelectedFont(font.css)}
+                  aria-pressed={isActive}
+                  style={{
+                    fontFamily: font.css,
+                    border: isActive ? '2px solid #007BFF' : '1px solid #ccc',
+                    padding: '0.5rem',
+                    margin: '0.25rem',
+                    textAlign: 'left',
+                    background: isActive ? '#e7f1ff' : '#fff'
+                  }}
                 >
                   <p>
                     {font.label}
@@ -275,6 +274,7 @@ function Input() {
               )
             })}
           </div>
+          
         </section>
 
         {error && (
@@ -296,7 +296,7 @@ function Input() {
 
           {isSubmitting && (
             <p>
-              The AI is analyzing your layout and design choices.
+              Processing your layout and design choices.
             </p>
           )}
         </div>

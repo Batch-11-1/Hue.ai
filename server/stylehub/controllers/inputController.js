@@ -20,6 +20,14 @@ const initiatePrompt = async (req, res) => {
   try {
     console.log("inputController.initiatePrompt called");
 
+    const contentType = (req.headers['content-type'] || '').toLowerCase();
+    if (!contentType.includes('application/json') && !contentType.includes('application/x-www-form-urlencoded')) {
+      console.warn("inputController.initiatePrompt unsupported content-type:", contentType);
+      return res.status(415).send("Unsupported Content-Type. Use application/json or application/x-www-form-urlencoded.");
+    }
+
+    console.debug("inputController.initiatePrompt req.body:", req.body);
+
     const htmlFile = getBodyValue(req.body, [
       "html",
       "htmlFile",
@@ -54,7 +62,7 @@ const initiatePrompt = async (req, res) => {
       "Requirements:",
       "1. Add CSS internally by including it in a <style> tag inside the <head> of the returned HTML.",
       "2. Keep the HTML structure/semantic tags (header/main/footer) consistent with the input; only adjust/add elements if required by the selected layout.",
-      "3. Use the chosen font style and color scheme across the page.",
+      "3. Use the chosen font style group and color scheme across the page.",
       "4. Return ONLY the complete HTML document (no markdown, no explanations).",
       "",
       `Layout: ${layout}.`,

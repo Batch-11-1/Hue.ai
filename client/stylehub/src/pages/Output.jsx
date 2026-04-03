@@ -1,51 +1,50 @@
-/*This page should display the html code passed to it and render the styled webpage as a preview. The preview should be resizeable. The page should have a text area to give further suggestions to the AI model with enough instructions alongside and a button to submit. The button should send the suggestion to server using axios along with the current html code. Once the response is received, the page should update the preview with the new html code.
-There should also be a button to finalize the style that redirects the user to result page along with the final html code as a prop.
-*/
+
 import "../App.css"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import axios from "axios"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 
 function Output() {
-  // Assumptions based on your description:
-  // - `/preview` returns raw HTML (as a string) for iframe preview.
-  // - `/adjust` returns updated raw HTML based on user suggestions.
-  // - `/file` confirms/saves the current HTML.
-  //
-  // Current backend controllers are placeholders in this repo; the UI is
-  // implemented to match the intended behavior.
 
   const location = useLocation()
   const navigate = useNavigate()
-  const initialHtml = typeof location?.state?.html === "string" ? location.state.html : ""
+  const resultData = location?.state?.result
 
-  const API_BASE_URL =
-    (import.meta.env.VITE_API_BASE_URL && import.meta.env.VITE_API_BASE_URL.trim()) ||
-    "http://localhost:3000"
-
-  const [viewMode, setViewMode] = useState("laptop")
-  const [previewHtml, setPreviewHtml] = useState(initialHtml)
-  const [suggestions, setSuggestions] = useState("")
-
-  const [loadingPreview, setLoadingPreview] = useState(false)
-  const [loadingAdjust, setLoadingAdjust] = useState(false)
-  const [loadingConfirm, setLoadingConfirm] = useState(false)
-
-  const [error, setError] = useState(null)
-  const [statusMessage, setStatusMessage] = useState("")
+  const backendBaseUrl = useMemo(() => {
+    const fromEnv = import.meta.env.VITE_BACKEND_BASE_URL
+    const base = fromEnv || 'http://localhost:3000'
+    return String(base).replace(/\/$/, '')
+  }, [])
 
   const extractHtml = (data) => {
     if (!data) return ""
     if (typeof data === "string") return data
     if (typeof data?.html === "string") return data.html
     if (typeof data?.previewHtml === "string") return data.previewHtml
+    if (typeof data?.result === "string") return data.result
     if (typeof data?.file === "string") return data.file
+    if (typeof data?.data?.html === "string") return data.data.html
+    if (typeof data?.data?.previewHtml === "string") return data.data.previewHtml
     return ""
   }
 
-  const previewHeight = viewMode === "mobile" ? 667 : 700
+  const initialPreviewHtml = useMemo(() => extractHtml(resultData), [resultData])
+  const [viewMode, setViewMode] = useState("laptop")
+  const [previewHtml, setPreviewHtml] = useState(initialPreviewHtml)
+  const [baseHtml, setBaseHtml] = useState(initialPreviewHtml)
+  const [suggestions, setSuggestions] = useState("")
+
+  const [loadingPreview, setLoadingPreview] = useState(false)
+  const [loadingAdjust, setLoadingAdjust] = useState(false)
+
+  const [error, setError] = useState(null)
+  const [statusMessage, setStatusMessage] = useState("")
+
+  const previewDimensions = viewMode === "mobile"
+    ? { width: 375, height: 667 }
+    : { width: 1200, height: 700 }
 
   const loadPreview = async () => {
     setError(null)
@@ -53,20 +52,12 @@ function Output() {
     setLoadingPreview(true)
 
     try {
-      const previewUrl = `${API_BASE_URL}/preview`
-
-      let res
-      // Your description says "axios get request"; backend route is `post`.
-      // Try GET first, then fallback to POST.
-      try {
-        res = await axios.get(previewUrl)
-      } catch {
-        res = await axios.post(previewUrl, {})
+      if (!baseHtml) {
+        throw new Error("No initial HTML to preview. Please submit input first.")
       }
 
-      const html = extractHtml(res.data)
-      if (!html) throw new Error("Preview endpoint did not return HTML.")
-      setPreviewHtml(html)
+      setPreviewHtml(baseHtml)
+      setStatusMessage("Preview loaded from provided result data.")
     } catch (e) {
       setError(e?.message || "Failed to load preview.")
     } finally {
@@ -81,16 +72,16 @@ function Output() {
 
     setLoadingAdjust(true)
     try {
-      const adjustUrl = `${API_BASE_URL}/adjust`
+      const adjustUrl = `${backendBaseUrl}/adjust`
       const res = await axios.post(adjustUrl, {
         html: previewHtml,
-        suggestions,
-        adjustment: suggestions, // extra key for compatibility
+        suggestion: suggestions || "Make the design more visually appealing and modern, with improved typography, spacing, and color scheme. Keep the layout and content structure the same, but enhance the overall aesthetics."
       })
 
       const html = extractHtml(res.data)
       if (!html) throw new Error("Adjust endpoint did not return HTML.")
       setPreviewHtml(html)
+      setBaseHtml(html)
       setStatusMessage("Adjustment applied.")
     } catch (e) {
       setError(e?.message || "Failed to adjust preview.")
@@ -99,30 +90,18 @@ function Output() {
     }
   }
 
-  const handleConfirm = async () => {
-    setError(null)
-    setStatusMessage("")
+  const handleConfirm = () => {
     if (!previewHtml) return
 
-    setLoadingConfirm(true)
-    try {
-      const fileUrl = `${API_BASE_URL}/file`
-      const res = await axios.post(fileUrl, { html: previewHtml })
-      const msg =
-        typeof res.data === "string" ? res.data : res.data?.message || "Confirmed."
-      setStatusMessage(msg)
-      // After confirming, navigate to result page with the HTML
-      navigate('/result', { state: { html: previewHtml } })
-    } catch (e) {
-      setError(e?.message || "Failed to confirm file.")
-    } finally {
-      setLoadingConfirm(false)
-    }
+    setError(null)
+    setStatusMessage("Finalized.")
+    navigate('/result', { state: { html: previewHtml } })
   }
 
   useEffect(() => {
-    if (initialHtml) return
-    loadPreview()
+    if (!previewHtml) {
+      loadPreview()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -141,7 +120,7 @@ function Output() {
         </button>
 
         <button type="button" onClick={loadPreview} disabled={loadingPreview}>
-          {loadingPreview ? "Loading..." : "Refresh Preview"}
+          {loadingPreview ? "Loading..." : "Reset Preview"}
         </button>
       </div>
 
@@ -154,13 +133,45 @@ function Output() {
           <div>{viewMode === "mobile" ? "Mobile viewport" : "Laptop viewport"}</div>
         </div>
 
-        <iframe
-          title="HTML Preview"
-          srcDoc={previewHtml || "<!doctype html><html><body></body></html>"}
-          width="100%"
-          height={previewHeight}
-          frameBorder="0"
-        />
+        <div
+          style={{
+            display: "inline-block",
+            padding: "16px",
+            border: "2px solid #333",
+            borderRadius: "12px",
+            backgroundColor: "#f7f7f7",
+            boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
+            maxWidth: "100%",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              marginBottom: "8px",
+              fontSize: "0.85rem",
+              color: "#444",
+              textAlign: "center",
+            }}
+          >
+            {viewMode === "mobile" ? "Phone preview" : "Laptop preview"}
+          </div>
+
+          <iframe
+            title="HTML Preview"
+            srcDoc={previewHtml || "<!doctype html><html><body></body></html>"}
+            width={Math.min(previewDimensions.width, 1200)}
+            height={previewDimensions.height}
+            style={{
+              border: "1px solid #888",
+              borderRadius: "8px",
+              maxWidth: "100%",
+              minWidth: "320px",
+              width: `${previewDimensions.width}px`,
+              transition: "width 0.2s ease, height 0.2s ease",
+              background: "white",
+            }}
+          />
+        </div>
       </div>
 
       <div>
@@ -183,14 +194,10 @@ function Output() {
           <button
             type="button"
             onClick={handleConfirm}
-            disabled={loadingConfirm || !previewHtml}
+            disabled={!previewHtml}
           >
-            {loadingConfirm ? "Finalizing..." : "Finalize"}
+            Continue
           </button>
-        </div>
-
-        <div>
-          Tip: use the mobile/laptop toggle to preview layout changes at different sizes.
         </div>
       </div>
       </div>

@@ -6,10 +6,20 @@ const indexRouter = require("./routes/indexRouter");
 //initialisations
 const app = express();
 
+const cors = require("cors")
+
 // For request bodies (either form-urlencoded or JSON).
 // HTML files can be large, so we increase limits from Express defaults.
 app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 app.use(express.json({ limit: "5mb" }));
+
+// Enable CORS for frontend origin; replace with your client URL in production.
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    methods: ["GET", "POST"],
+  })
+)
 
 //routing
 app.use("/", indexRouter);

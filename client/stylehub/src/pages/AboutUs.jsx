@@ -1,6 +1,4 @@
-/*
-This page should show the a small information about our team and cards for each team member with their name, bio/qualification, project role and links to github and linkedin profiles.
-*/
+
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import MemberCard from '../components/MemberCard'
@@ -86,6 +84,13 @@ function AboutUs() {
       linkedin: 'https://www.linkedin.com/in/vivek-v-591763251'
     },
     {
+      name: 'Ijas Faizy',
+      role: 'Frontend - React',
+      qualification: 'Mern Stack Developer',
+      github: 'https://github.com/member4',
+      linkedin: 'https://www.linkedin.com/in/member4'
+    },
+    {
       name: 'Afsal.A',
       role: 'UI/UX Designer',
       qualification: 'Mern Stack Developer',
@@ -98,13 +103,6 @@ function AboutUs() {
       qualification: 'Python Fullstack Developer',
       github: 'https://github.com/member4',
       linkedin: 'https://www.linkedin.com/in/member4'
-    },
-    {
-      name: 'Ijas Faizy',
-      role: 'Frontend - React',
-      qualification: 'Mern Stack Developer',
-      github: 'https://github.com/member4',
-      linkedin: 'https://www.linkedin.com/in/member4'
     }
 
   ]
@@ -115,7 +113,7 @@ function AboutUs() {
       <h1>About Us page</h1>
       <h1>About Us</h1>
       <p>
-        We are a team of beginner web developers passionate about creating beautiful, functional websites and building simple, useful web applications. We focus on creativity, quality, and user-friendly design.
+        We are a team of web developers passionate about creating beautiful, functional websites and building simple, useful web applications. We focus on creativity, quality, and user-friendly design.
       </p>
       {members.map((member) => (
         <MemberCard

@@ -1,18 +1,10 @@
-/*
-This page will have 4 main actions.
-1-This page will recieve a final html code as a prop and should have a button to download the html file.
-2-There should be another button to download the css file seperately.
-3-The next section should have another file upload option to repeat the styling with a submit button to send a new html file along with the current html code to the server to generate a new styled webpage. The response data should be passed to the Output page as a prop to update the preview and the html code.
-4-There should be a button to start over the styling by redirecting the user to the home page and clearing all the data.
-*/
+
 import '../App.css'
 import axios from 'axios'
 import { useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-
-const RESTYLE_ENDPOINT = 'http://localhost:3001/api/restyle' // TODO: change to your backend route
 
 function extractCssFromHtml(html) {
   if (!html) return ''
@@ -42,9 +34,19 @@ function downloadTextFile(filename, content, mimeType) {
   URL.revokeObjectURL(url)
 }
 
+function Spinner() {
+  return <span className="spinner" aria-label="Loading"></span>
+}
+
 function Result() {
   const navigate = useNavigate()
   const location = useLocation()
+
+  const backendBaseUrl = useMemo(() => {
+    const fromEnv = import.meta.env.VITE_BACKEND_BASE_URL
+    const base = fromEnv || 'http://localhost:3000'
+    return String(base).replace(/\/$/, '')
+  }, [])
 
   const finalHtmlFromState = location.state?.finalHtml || location.state?.html || location.state?.htmlCode
   const finalCssFromState = location.state?.finalCss || location.state?.css
@@ -53,10 +55,14 @@ function Result() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
+  const [convertedHtml, setConvertedHtml] = useState('')
+  const [convertedCss, setConvertedCss] = useState('')
+
   const finalCss = useMemo(() => {
+    if (convertedCss) return convertedCss
     if (finalCssFromState) return finalCssFromState
     return extractCssFromHtml(finalHtmlFromState)
-  }, [finalCssFromState, finalHtmlFromState])
+  }, [convertedCss, finalCssFromState, finalHtmlFromState])
 
   const canDownload = Boolean(finalHtmlFromState && typeof finalHtmlFromState === 'string' && finalHtmlFromState.trim().length > 0)
 
@@ -76,34 +82,30 @@ function Result() {
 
     setIsSubmitting(true)
     try {
-      const formData = new FormData()
-      formData.append('file', uploadFile)
-      formData.append('htmlCode', finalHtmlFromState)
-
-      const response = await axios.post(RESTYLE_ENDPOINT, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      // Read the uploaded file as text
+      const fileContent = await new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = () => reject(reader.error)
+        reader.readAsText(uploadFile)
       })
 
-      const data = response.data || {}
-      const newHtml =
-        data.finalHtml ||
-        data.html ||
-        data.htmlCode ||
-        data.updatedHtml ||
-        data.resultHtml ||
-        data.newHtml ||
-        ''
-      const newCss = data.finalCss || data.css || data.updatedCss || ''
+      const response = await axios.post(`${backendBaseUrl}/repeat`, {
+        styledHtml: finalHtmlFromState,
+        targetHtml: fileContent,
+      })
 
-      if (!newHtml) {
+      // The /repeat endpoint returns plain HTML text, not JSON
+      const newHtml = typeof response.data === 'string' ? response.data : ''
+
+      if (!newHtml || newHtml.trim().length === 0) {
         throw new Error('Server response did not include updated HTML.')
       }
 
       navigate('/output', {
         replace: true,
         state: {
-          finalHtml: newHtml,
-          finalCss: newCss,
+          result: newHtml
         },
       })
     } catch (err) {
@@ -115,21 +117,52 @@ function Result() {
 
   function handleDownloadHtml() {
     if (!canDownload) return
-    downloadTextFile('final.html', finalHtmlFromState, 'text/html;charset=utf-8')
-  }
-
-  function handleDownloadCss() {
-    const css = (finalCss || '').trim()
-    if (!css) {
-      setError('No CSS found to download (expected <style> blocks or `finalCss` from the server).')
+    const htmlToDownload = (convertedHtml || finalHtmlFromState || '').trim()
+    if (!htmlToDownload) {
+      setError('Final HTML is empty; cannot download.')
       return
     }
-    downloadTextFile('styles.css', css, 'text/css;charset=utf-8')
+    downloadTextFile('final.html', htmlToDownload, 'text/html;charset=utf-8')
+  }
+
+  const htmlButtonLabel = convertedHtml ? 'Download HTML' : 'Download as single file'
+
+  async function handleDownloadCss() {
+    if (!canDownload) {
+      setError('Final HTML is missing; cannot generate CSS.')
+      return
+    }
+
+    setError('')
+    setIsSubmitting(true)
+
+    try {
+      const res = await axios.post(`${backendBaseUrl}/file`, {
+        html: finalHtmlFromState,
+      })
+
+      const { cssContent, htmlContent } = res.data || {}
+
+      if (!cssContent) {
+        throw new Error('Backend /file did not return CSS content.')
+      }
+
+      if (htmlContent) {
+        setConvertedHtml(htmlContent)
+      }
+      setConvertedCss(cssContent)
+
+      downloadTextFile('styles.css', cssContent, 'text/css;charset=utf-8')
+    } catch (err) {
+      setError(err?.response?.data?.error || err?.message || 'Failed to generate CSS through backend.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   function handleStartOver() {
     // “Clearing all data” here means: return to the home route without passing any state.
-    navigate('/', { replace: true })
+    navigate('/input', { replace: true })
   }
 
   return (
@@ -147,13 +180,21 @@ function Result() {
       <section style={{ marginTop: 16 }}>
         <h2>Downloads</h2>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <button type="button" onClick={handleDownloadHtml} disabled={!canDownload}>
-            Download HTML
+          <button type="button" onClick={handleDownloadHtml} disabled={!canDownload || isSubmitting}>
+            {isSubmitting ? <><Spinner />Downloading</> : htmlButtonLabel}
           </button>
-          <button type="button" onClick={handleDownloadCss} disabled={!canDownload}>
-            Download CSS
+          <button type="button" onClick={handleDownloadCss} disabled={!canDownload || isSubmitting}>
+            {isSubmitting ? <><Spinner />Processing CSS</> : 'Download CSS'}
           </button>
         </div>
+        {finalCss ? (
+          <div style={{ marginTop: 16 }}>
+            <h3>Generated CSS Preview</h3>
+            <pre style={{ maxHeight: 220, overflow: 'auto', background: '#f6f6f6', padding: 12 }}>
+              {finalCss}
+            </pre>
+          </div>
+        ) : null}
       </section>
 
       <section style={{ marginTop: 24 }}>
