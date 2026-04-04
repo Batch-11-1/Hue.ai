@@ -1,5 +1,3 @@
-
-import "../App.css"
 import { useState, useEffect, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import axios from "axios"
@@ -189,7 +187,7 @@ function Output() {
             onClick={handleAdjust}
             disabled={loadingAdjust || !previewHtml}
           >
-            {loadingAdjust ? "Adjusting..." : "Adjust"}
+            {loadingAdjust ? "Improving..." : "Improve"}
           </button>
           <button
             type="button"

@@ -1,5 +1,3 @@
-
-import '../App.css'
 import axios from 'axios'
 import { useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -184,7 +182,7 @@ function Result() {
             {isSubmitting ? <><Spinner />Downloading</> : htmlButtonLabel}
           </button>
           <button type="button" onClick={handleDownloadCss} disabled={!canDownload || isSubmitting}>
-            {isSubmitting ? <><Spinner />Processing CSS</> : 'Download CSS'}
+            {isSubmitting ? <><Spinner />Processing CSS</> : 'Download CSS separately'}
           </button>
         </div>
         {finalCss ? (
