@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import DottedSurface from '../components/DottedSurface'
 
 function Input() {
   const navigate = useNavigate()
@@ -112,6 +113,7 @@ function Input() {
 
   return (
     <>
+    <DottedSurface theme="dark">
       <Header />
       <div>
         <form onSubmit={handleSubmit}>
@@ -303,6 +305,7 @@ function Input() {
       </form>
       </div>
       <Footer />
+      </DottedSurface>
     </>
   )
 }

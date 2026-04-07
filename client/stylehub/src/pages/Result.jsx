@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import DottedSurface from '../components/DottedSurface'
 
 function extractCssFromHtml(html) {
   if (!html) return ''
@@ -165,6 +166,7 @@ function Result() {
 
   return (
     <>
+    <DottedSurface theme="dark">
       <Header />
       <div style={{ padding: 20 }}>
         <h1>Final result</h1>
@@ -235,6 +237,7 @@ function Result() {
       </section>
       </div>
       <Footer />
+      </DottedSurface>
     </>
   )
 }

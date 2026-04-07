@@ -4,7 +4,6 @@ function Header() {
   return (
     <header>
       <div>
-        <img src="" alt="Logo" />
         <h1>StyleHub</h1>
         <nav>
           <Link to="/">Home</Link>

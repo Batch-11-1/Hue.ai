@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import axios from "axios"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
+import DottedSurface from '../components/DottedSurface'
 
 function Output() {
 
@@ -105,6 +106,7 @@ function Output() {
 
   return (
     <>
+    <DottedSurface theme="dark">
       <Header />
       <div>
         <h1>Output page</h1>
@@ -200,6 +202,7 @@ function Output() {
       </div>
       </div>
       <Footer />
+      </DottedSurface>
     </>
   )
 }

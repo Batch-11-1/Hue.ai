@@ -2,6 +2,7 @@
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import MemberCard from '../components/MemberCard'
+import DottedSurface from '../components/DottedSurface'
 
 function AboutUs() {
   const members = [
@@ -109,6 +110,7 @@ function AboutUs() {
 
   return (
     <>
+      <DottedSurface theme="dark">
       <Header />
       <h1>About Us page</h1>
       <h1>About Us</h1>
@@ -126,6 +128,7 @@ function AboutUs() {
         />
       ))}
       <Footer />
+      </DottedSurface>
     </>
   )
 }
