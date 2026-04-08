@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import axios from "axios"
-import Header from "../components/Header"
+import Header from "../components/Navbar.jsx"
 import Footer from "../components/Footer"
+import DottedSurface from '../components/DottedSurface'
+import '../styles/Output.css'
 
 function Output() {
-
   const location = useLocation()
   const navigate = useNavigate()
   const resultData = location?.state?.result
@@ -33,10 +34,8 @@ function Output() {
   const [previewHtml, setPreviewHtml] = useState(initialPreviewHtml)
   const [baseHtml, setBaseHtml] = useState(initialPreviewHtml)
   const [suggestions, setSuggestions] = useState("")
-
   const [loadingPreview, setLoadingPreview] = useState(false)
   const [loadingAdjust, setLoadingAdjust] = useState(false)
-
   const [error, setError] = useState(null)
   const [statusMessage, setStatusMessage] = useState("")
 
@@ -48,12 +47,8 @@ function Output() {
     setError(null)
     setStatusMessage("")
     setLoadingPreview(true)
-
     try {
-      if (!baseHtml) {
-        throw new Error("No initial HTML to preview. Please submit input first.")
-      }
-
+      if (!baseHtml) throw new Error("No initial HTML to preview. Please submit input first.")
       setPreviewHtml(baseHtml)
       setStatusMessage("Preview loaded from provided result data.")
     } catch (e) {
@@ -67,7 +62,6 @@ function Output() {
     setError(null)
     setStatusMessage("")
     if (!previewHtml) return
-
     setLoadingAdjust(true)
     try {
       const adjustUrl = `${backendBaseUrl}/adjust`
@@ -75,7 +69,6 @@ function Output() {
         html: previewHtml,
         suggestion: suggestions || "Make the design more visually appealing and modern, with improved typography, spacing, and color scheme. Keep the layout and content structure the same, but enhance the overall aesthetics."
       })
-
       const html = extractHtml(res.data)
       if (!html) throw new Error("Adjust endpoint did not return HTML.")
       setPreviewHtml(html)
@@ -90,116 +83,137 @@ function Output() {
 
   const handleConfirm = () => {
     if (!previewHtml) return
-
     setError(null)
     setStatusMessage("Finalized.")
     navigate('/result', { state: { html: previewHtml } })
   }
 
   useEffect(() => {
-    if (!previewHtml) {
-      loadPreview()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!previewHtml) loadPreview()
   }, [])
 
   return (
     <>
-      <Header />
-      <div>
-        <h1>Output page</h1>
+      <DottedSurface theme="dark">
+        <Header />
 
-      <div role="group" aria-label="Preview view mode">
-        <button type="button" onClick={() => setViewMode("laptop")}>
-          Laptop
-        </button>
-        <button type="button" onClick={() => setViewMode("mobile")}>
-          Mobile
-        </button>
+        <div className="output-page">
 
-        <button type="button" onClick={loadPreview} disabled={loadingPreview}>
-          {loadingPreview ? "Loading..." : "Reset Preview"}
-        </button>
-      </div>
-
-      {error ? <div>{error}</div> : null}
-      {statusMessage ? <div>{statusMessage}</div> : null}
-
-      <div>
-        <div>
-          <div>Preview</div>
-          <div>{viewMode === "mobile" ? "Mobile viewport" : "Laptop viewport"}</div>
-        </div>
-
-        <div
-          style={{
-            display: "inline-block",
-            padding: "16px",
-            border: "2px solid #333",
-            borderRadius: "12px",
-            backgroundColor: "#f7f7f7",
-            boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
-            maxWidth: "100%",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              marginBottom: "8px",
-              fontSize: "0.85rem",
-              color: "#444",
-              textAlign: "center",
-            }}
-          >
-            {viewMode === "mobile" ? "Phone preview" : "Laptop preview"}
+          {/* Page title */}
+          <div className="output-hero">
+            <p className="output-eyebrow">HUE.ai AI</p>
+            <h1 className="output-title">Output page</h1>
           </div>
 
-          <iframe
-            title="HTML Preview"
-            srcDoc={previewHtml || "<!doctype html><html><body></body></html>"}
-            width={Math.min(previewDimensions.width, 1200)}
-            height={previewDimensions.height}
-            style={{
-              border: "1px solid #888",
-              borderRadius: "8px",
-              maxWidth: "100%",
-              minWidth: "320px",
-              width: `${previewDimensions.width}px`,
-              transition: "width 0.2s ease, height 0.2s ease",
-              background: "white",
-            }}
-          />
-        </div>
-      </div>
+          {/* Toolbar */}
+          <div className="output-toolbar" role="group" aria-label="Preview view mode">
+            <div className="view-toggle">
+              <button
+                type="button"
+                className={`btn-toggle ${viewMode === "laptop" ? "btn-toggle--active" : ""}`}
+                onClick={() => setViewMode("laptop")}
+              >
+                Laptop
+              </button>
+              <button
+                type="button"
+                className={`btn-toggle ${viewMode === "mobile" ? "btn-toggle--active" : ""}`}
+                onClick={() => setViewMode("mobile")}
+              >
+                Mobile
+              </button>
+            </div>
 
-      <div>
-        <label htmlFor="output-suggestions">Further suggestions</label>
-        <textarea
-          id="output-suggestions"
-          value={suggestions}
-          onChange={(e) => setSuggestions(e.target.value)}
-          placeholder="Add extra styling or adjustments you'd like applied to the output."
-        />
+            <button
+              type="button"
+              className="btn-ghost"
+              onClick={loadPreview}
+              disabled={loadingPreview}
+            >
+              {loadingPreview ? <span className="spinner" /> : null}
+              {loadingPreview ? "Loading..." : "Reset Preview"}
+            </button>
+          </div>
 
-        <div>
-          <button
-            type="button"
-            onClick={handleAdjust}
-            disabled={loadingAdjust || !previewHtml}
-          >
-            {loadingAdjust ? "Improving..." : "Improve"}
-          </button>
-          <button
-            type="button"
-            onClick={handleConfirm}
-            disabled={!previewHtml}
-          >
-            Continue
-          </button>
+          {/* Status / Error banners */}
+          {error
+            ? <div className="banner banner--error">{error}</div>
+            : null}
+          {statusMessage
+            ? <div className="banner banner--success">{statusMessage}</div>
+            : null}
+
+          {/* Preview frame */}
+          <div className="preview-section">
+            <div className="preview-header">
+              <span className="preview-label">Preview</span>
+              <span className="preview-viewport">
+                {viewMode === "mobile" ? "Mobile viewport" : "Laptop viewport"}
+              </span>
+            </div>
+
+            <div className="preview-shell">
+              <div className="preview-bar">
+                <span className="preview-dot" />
+                <span className="preview-dot" />
+                <span className="preview-dot" />
+                <span className="preview-bar-label">
+                  {viewMode === "mobile" ? "Phone preview" : "Laptop preview"}
+                </span>
+              </div>
+
+              <iframe
+                title="HTML Preview"
+                srcDoc={previewHtml || "<!doctype html><html><body></body></html>"}
+                width={Math.min(previewDimensions.width, 1200)}
+                height={previewDimensions.height}
+                className="preview-iframe"
+                style={{
+                  width: `${Math.min(previewDimensions.width, 1200)}px`,
+                  height: `${previewDimensions.height}px`,
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Suggestions + actions */}
+          <div className="adjust-section">
+            <label className="adjust-label" htmlFor="output-suggestions">
+              Further suggestions
+            </label>
+            <textarea
+              id="output-suggestions"
+              className="adjust-textarea"
+              value={suggestions}
+              onChange={(e) => setSuggestions(e.target.value)}
+              placeholder="Add extra styling or adjustments you'd like applied to the output."
+            />
+
+            <div className="adjust-actions">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleAdjust}
+                disabled={loadingAdjust || !previewHtml}
+              >
+                {loadingAdjust ? <span className="spinner" /> : null}
+                {loadingAdjust ? "Improving..." : "Improve"}
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleConfirm}
+                disabled={!previewHtml}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+
         </div>
-      </div>
-      </div>
-      <Footer />
+
+        <Footer />
+      </DottedSurface>
     </>
   )
 }
