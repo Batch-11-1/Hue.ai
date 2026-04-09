@@ -1,16 +1,156 @@
-.spinner {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  border-top-color: rgba(0, 0, 0, 0.7);
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-  margin-right: 8px;
-  vertical-align: text-bottom;
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500&display=swap');
+
+@font-face {
+  font-family: 'Necosmic';
+  src: url('/fonts/Necosmic.woff2') format('woff2'),
+       url('/fonts/Necosmic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* ── Tokens ─────────────────────────────────────────── */
+:root {
+  --clr-black:       #0F0B0A;
+  --clr-white:       #F0F4F5;
+  --clr-purple:      #7e3bed;
+  --clr-purple-dim:  rgba(126, 59, 237, 0.18);
+  --clr-purple-glow: rgba(126, 59, 237, 0.55);
+}
+
+/* ── Reset ──────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  background: transparent;   /* let DottedSurface bg show */
+  color: var(--clr-white);
+  font-family: 'Sora', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Hero wrapper ───────────────────────────────────── */
+.hero-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  text-align: center;
+  gap: 2rem;
+}
+
+/* ── Title ──────────────────────────────────────────── */
+.hero-title {
+  font-family: 'Necosmic', sans-serif;
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  color: var(--clr-white);
+  line-height: 1;
+  text-shadow:
+    0 0 40px rgba(126, 59, 237, 0.35),
+    0 0 80px rgba(126, 59, 237, 0.15);
+  animation: fadeUp 2.0s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Description ────────────────────────────────────── */
+.hero-description {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(0.95rem, 2vw, 1.125rem);
+  font-weight: 300;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  color: rgba(240, 244, 245, 0.62);
+  max-width: 520px;
+  animation: fadeUp 4.0s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Actions row ────────────────────────────────────── */
+.hero-actions {
+  display: flex;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeUp 0.9s 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Base button ────────────────────────────────────── */
+.btn {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 0.8rem 2.1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.btn:active {
+  transform: scale(0.95) translateY(1px) !important;
+  transition-duration: 0.08s;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.18) 0%, transparent 70%);
+  opacity: 0;
+  transform: scale(0);
+  transition: transform 0.45s ease, opacity 0.45s ease;
+}
+
+.btn:active::after {
+  transform: scale(2.5);
+  opacity: 1;
+  transition-duration: 0s;
+}
+
+/* ── Primary button ─────────────────────────────────── */
+.btn-primary {
+  background: var(--clr-purple);
+  color: var(--clr-white);
+  box-shadow: 0 4px 18px rgba(126, 59, 237, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.03);
+  background: #8f4df5;
+  box-shadow:
+    0 0 22px 6px var(--clr-purple-glow),
+    0 8px 28px rgba(126, 59, 237, 0.45);
+}
+
+/* ── Secondary button ───────────────────────────────── */
+.btn-secondary {
+  background: transparent;
+  color: var(--clr-white);
+  border: 1.5px solid rgba(240, 244, 245, 0.28);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px) scale(1.03);
+  border-color: var(--clr-white);
+  background: var(--clr-white-dim);
+  box-shadow:
+    0 0 18px 4px var(--clr-white-glow),
+    inset 0 0 14px rgba(126, 59, 237, 0.12);
+}
+
+/* ── Keyframes ──────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

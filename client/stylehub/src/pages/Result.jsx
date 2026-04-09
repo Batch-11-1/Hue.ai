@@ -1,35 +1,30 @@
 import axios from 'axios'
 import { useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import Header from '../components/Header'
+import Header from '../components/Navbar.jsx'
 import Footer from '../components/Footer'
 import DottedSurface from '../components/DottedSurface'
+import '../styles/Result.css'
 
 function extractCssFromHtml(html) {
   if (!html) return ''
-
-  // Collect inline <style> blocks. If your backend returns CSS separately,
-  // prefer using that instead of extracting.
   const styleMatches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi) || []
   const extracted = styleMatches
     .map((block) => block.replace(/^[\s\S]*?<style[^>]*>/i, '').replace(/<\/style>[\s\S]*?$/i, ''))
     .map((s) => s.trim())
     .filter(Boolean)
-
   return extracted.join('\n\n')
 }
 
 function downloadTextFile(filename, content, mimeType) {
   const blob = new Blob([content], { type: mimeType })
   const url = URL.createObjectURL(blob)
-
   const a = document.createElement('a')
   a.href = url
   a.download = filename
   document.body.appendChild(a)
   a.click()
   a.remove()
-
   URL.revokeObjectURL(url)
 }
 
@@ -53,7 +48,6 @@ function Result() {
   const [uploadFile, setUploadFile] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
-
   const [convertedHtml, setConvertedHtml] = useState('')
   const [convertedCss, setConvertedCss] = useState('')
 
@@ -68,45 +62,23 @@ function Result() {
   async function handleRestyleSubmit(e) {
     e.preventDefault()
     setError('')
-
-    if (!canDownload) {
-      setError('Missing final HTML. Please go back and generate a result first.')
-      return
-    }
-
-    if (!uploadFile) {
-      setError('Please choose an HTML file to restyle.')
-      return
-    }
-
+    if (!canDownload) { setError('Missing final HTML. Please go back and generate a result first.'); return }
+    if (!uploadFile) { setError('Please choose an HTML file to restyle.'); return }
     setIsSubmitting(true)
     try {
-      // Read the uploaded file as text
       const fileContent = await new Promise((resolve, reject) => {
         const reader = new FileReader()
         reader.onload = () => resolve(reader.result)
         reader.onerror = () => reject(reader.error)
         reader.readAsText(uploadFile)
       })
-
       const response = await axios.post(`${backendBaseUrl}/repeat`, {
         styledHtml: finalHtmlFromState,
         targetHtml: fileContent,
       })
-
-      // The /repeat endpoint returns plain HTML text, not JSON
       const newHtml = typeof response.data === 'string' ? response.data : ''
-
-      if (!newHtml || newHtml.trim().length === 0) {
-        throw new Error('Server response did not include updated HTML.')
-      }
-
-      navigate('/output', {
-        replace: true,
-        state: {
-          result: newHtml
-        },
-      })
+      if (!newHtml || newHtml.trim().length === 0) throw new Error('Server response did not include updated HTML.')
+      navigate('/output', { replace: true, state: { result: newHtml } })
     } catch (err) {
       setError(err?.response?.data?.message || err?.message || 'Restyle request failed.')
     } finally {
@@ -117,40 +89,22 @@ function Result() {
   function handleDownloadHtml() {
     if (!canDownload) return
     const htmlToDownload = (convertedHtml || finalHtmlFromState || '').trim()
-    if (!htmlToDownload) {
-      setError('Final HTML is empty; cannot download.')
-      return
-    }
+    if (!htmlToDownload) { setError('Final HTML is empty; cannot download.'); return }
     downloadTextFile('final.html', htmlToDownload, 'text/html;charset=utf-8')
   }
 
   const htmlButtonLabel = convertedHtml ? 'Download HTML' : 'Download as single file'
 
   async function handleDownloadCss() {
-    if (!canDownload) {
-      setError('Final HTML is missing; cannot generate CSS.')
-      return
-    }
-
+    if (!canDownload) { setError('Final HTML is missing; cannot generate CSS.'); return }
     setError('')
     setIsSubmitting(true)
-
     try {
-      const res = await axios.post(`${backendBaseUrl}/file`, {
-        html: finalHtmlFromState,
-      })
-
+      const res = await axios.post(`${backendBaseUrl}/file`, { html: finalHtmlFromState })
       const { cssContent, htmlContent } = res.data || {}
-
-      if (!cssContent) {
-        throw new Error('Backend /file did not return CSS content.')
-      }
-
-      if (htmlContent) {
-        setConvertedHtml(htmlContent)
-      }
+      if (!cssContent) throw new Error('Backend /file did not return CSS content.')
+      if (htmlContent) setConvertedHtml(htmlContent)
       setConvertedCss(cssContent)
-
       downloadTextFile('styles.css', cssContent, 'text/css;charset=utf-8')
     } catch (err) {
       setError(err?.response?.data?.error || err?.message || 'Failed to generate CSS through backend.')
@@ -160,83 +114,123 @@ function Result() {
   }
 
   function handleStartOver() {
-    // “Clearing all data” here means: return to the home route without passing any state.
     navigate('/input', { replace: true })
   }
 
   return (
     <>
-    <DottedSurface theme="dark">
-      <Header />
-      <div style={{ padding: 20 }}>
-        <h1>Final result</h1>
+      <DottedSurface theme="dark">
+        <Header />
 
-      {!canDownload ? (
-        <div style={{ color: 'crimson' }}>
-          Final HTML is missing. Generate a result first, then come back here.
-        </div>
-      ) : null}
+        <div className="result-page">
 
-      <section style={{ marginTop: 16 }}>
-        <h2>Downloads</h2>
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <button type="button" onClick={handleDownloadHtml} disabled={!canDownload || isSubmitting}>
-            {isSubmitting ? <><Spinner />Downloading</> : htmlButtonLabel}
-          </button>
-          <button type="button" onClick={handleDownloadCss} disabled={!canDownload || isSubmitting}>
-            {isSubmitting ? <><Spinner />Processing CSS</> : 'Download CSS separately'}
-          </button>
-        </div>
-        {finalCss ? (
-          <div style={{ marginTop: 16 }}>
-            <h3>Generated CSS Preview</h3>
-            <pre style={{ maxHeight: 220, overflow: 'auto', background: '#f6f6f6', padding: 12 }}>
-              {finalCss}
-            </pre>
+          {/* Hero */}
+          <div className="result-hero">
+            <p className="result-eyebrow">HUE.ai AI</p>
+            <h1 className="result-title">Final result</h1>
           </div>
-        ) : null}
-      </section>
 
-      <section style={{ marginTop: 24 }}>
-        <h2>Restyle again</h2>
-        <p style={{ marginTop: 6 }}>
-          Upload a new HTML file and submit it along with your current HTML to generate a new styled webpage.
-        </p>
+          {/* Missing HTML warning */}
+          {!canDownload ? (
+            <div className="banner banner--error">
+              Final HTML is missing. Generate a result first, then come back here.
+            </div>
+          ) : null}
 
-        <form onSubmit={handleRestyleSubmit} style={{ marginTop: 12 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxWidth: 520 }}>
-            <label>
-              Upload HTML file
-              <input
-                style={{ display: 'block', marginTop: 6 }}
-                type="file"
-                accept=".html,.ejs,.jsx,.js,.txt"
-                onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
-                disabled={isSubmitting}
-              />
-            </label>
+          {/* Downloads section */}
+          <section className="result-section">
+            <div className="result-section-header">
+              <span className="result-section-icon">↓</span>
+              <h2 className="result-section-title">Downloads</h2>
+            </div>
 
-            <button type="submit" disabled={isSubmitting || !uploadFile || !canDownload}>
-              {isSubmitting ? 'Generating…' : 'Submit & Generate New Styling'}
+            <div className="download-btn-row">
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={handleDownloadHtml}
+                disabled={!canDownload || isSubmitting}
+              >
+                {isSubmitting ? <><Spinner /> Downloading</> : htmlButtonLabel}
+              </button>
+              <button
+                className="btn btn-secondary"
+                type="button"
+                onClick={handleDownloadCss}
+                disabled={!canDownload || isSubmitting}
+              >
+                {isSubmitting ? <><Spinner /> Processing CSS</> : 'Download CSS separately'}
+              </button>
+            </div>
+
+            {finalCss ? (
+              <div className="css-preview-block">
+                <h3 className="css-preview-title">Generated CSS Preview</h3>
+                <pre className="css-preview-code">{finalCss}</pre>
+              </div>
+            ) : null}
+          </section>
+
+          {/* Restyle section */}
+          <section className="result-section">
+            <div className="result-section-header">
+              <span className="result-section-icon">↺</span>
+              <h2 className="result-section-title">Restyle again</h2>
+            </div>
+            <p className="result-section-desc">
+              Upload a new HTML file and submit it along with your current HTML to generate a new styled webpage.
+            </p>
+
+            <form className="restyle-form" onSubmit={handleRestyleSubmit}>
+              <label className="file-upload-label">
+                <div className="file-upload-text">
+                  <p className="file-name">
+                    {uploadFile ? `Selected: ${uploadFile.name}` : 'Upload HTML file'}
+                  </p>
+                  <p className="file-hint">Accepted: .html, .ejs, .jsx, .js, .txt</p>
+                </div>
+                <div className="file-browse-btn">Browse</div>
+                <input
+                  className="file-input-hidden"
+                  type="file"
+                  accept=".html,.ejs,.jsx,.js,.txt"
+                  onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
+                  disabled={isSubmitting}
+                />
+              </label>
+
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={isSubmitting || !uploadFile || !canDownload}
+              >
+                {isSubmitting ? <><Spinner /> Generating…</> : 'Submit & Generate New Styling'}
+              </button>
+            </form>
+
+            {error ? (
+              <div className="banner banner--error">{error}</div>
+            ) : null}
+          </section>
+
+          {/* Start over section */}
+          <section className="result-section result-section--slim">
+            <div className="result-section-header">
+              <span className="result-section-icon">⟳</span>
+              <h2 className="result-section-title">Start over</h2>
+            </div>
+            <button
+              className="btn btn-ghost"
+              type="button"
+              onClick={handleStartOver}
+            >
+              Restart Styling
             </button>
-          </div>
-        </form>
+          </section>
 
-        {error ? (
-          <div style={{ color: 'crimson', marginTop: 10 }}>
-            {error}
-          </div>
-        ) : null}
-      </section>
+        </div>
 
-      <section style={{ marginTop: 24 }}>
-        <h2>Start over</h2>
-        <button type="button" onClick={handleStartOver}>
-          Restart Styling
-        </button>
-      </section>
-      </div>
-      <Footer />
+        <Footer />
       </DottedSurface>
     </>
   )

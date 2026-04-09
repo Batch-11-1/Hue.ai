@@ -1,14 +1,13 @@
-
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import Header from '../components/Header'
+import Header from '../components/Navbar.jsx'
 import Footer from '../components/Footer'
 import DottedSurface from '../components/DottedSurface'
+import '../styles/Input.css'
 
 function Input() {
   const navigate = useNavigate()
-
   const [file, setFile] = useState(null)
   const [selectedLayout, setSelectedLayout] = useState(null)
   const [colors, setColors] = useState(['#323233', '#eeeeee'])
@@ -62,47 +61,20 @@ function Input() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-
-    if (!file) {
-      setError('Please upload a file before continuing.')
-      return
-    }
-
-    if (!selectedLayout) {
-      setError('Please choose a layout.')
-      return
-    }
-
-    if (!selectedFont) {
-      setError('Please choose a font.')
-      return
-    }
-
+    if (!file) { setError('Please upload a file before continuing.'); return }
+    if (!selectedLayout) { setError('Please choose a layout.'); return }
+    if (!selectedFont) { setError('Please choose a font.'); return }
     try {
       setIsSubmitting(true)
-
-      // Read the file content
       const htmlContent = await new Promise((resolve, reject) => {
         const reader = new FileReader()
         reader.onload = (e) => resolve(e.target.result)
         reader.onerror = reject
         reader.readAsText(file)
       })
-
-      const payload = {
-        html: htmlContent,
-        layout: selectedLayout,
-        colorScheme: colors,
-        fontStyle: selectedFont,
-      }
-
+      const payload = { html: htmlContent, layout: selectedLayout, colorScheme: colors, fontStyle: selectedFont }
       const response = await axios.post(`${backendBaseUrl}/initiate`, payload)
-
-      navigate('/output', {
-        state: {
-          result: response.data
-        },
-      })
+      navigate('/output', { state: { result: response.data } })
     } catch (err) {
       console.error(err)
       setError('Something went wrong while processing your request. Please try again.')
@@ -113,198 +85,118 @@ function Input() {
 
   return (
     <>
-    <DottedSurface theme="dark">
-      <Header />
-      <div>
-        <form onSubmit={handleSubmit}>
-        <header>
-          <p>
-            Stylehub AI
-          </p>
-          <h1>
-            Upload your page & design preferences
-          </h1>
-          <p>
-            Provide your page file and a few quick choices so the AI can
-            understand the layout, color system, and typography you have in
-            mind.
-          </p>
-        </header>
+      <DottedSurface theme="dark">
+        <Header />
+        <div className="input-page">
+          <form className="input-form" onSubmit={handleSubmit}>
 
-        {/* File upload */}
-        <section>
-          <h2>
-            1. Upload your file
-          </h2>
-          <p>
-            Accepted formats: <code>.html</code>, <code>.ejs</code>,{' '}
-            <code>.jsx</code>
-          </p>
-
-          <label>
-            <div>
-              <p>
-                {file ? `Selected: ${file.name}` : 'Click to upload a page file'}
+            <header className="input-hero">
+              <p className="input-eyebrow">HUE.ai AI</p>
+              <h1 className="input-title">Upload your page & design preferences</h1>
+              <p className="input-subtitle">
+                Provide your page file and a few quick choices so the AI can
+                understand the layout, color system, and typography you have in mind.
               </p>
-              <p>
-                The file is sent securely to the AI for analysis only when you
-                submit.
+            </header>
+
+            {/* File upload */}
+            <section className="input-section">
+              <h2 className="section-title">1. Upload your file</h2>
+              <p className="section-desc">
+                Accepted formats: <code className="code-tag">.html</code>, <code className="code-tag">.ejs</code>, <code className="code-tag">.jsx</code>
               </p>
-            </div>
-            <div>
-              Browse file
-            </div>
-            <input
-              type="file"
-              accept=".html,.ejs,.jsx"
-              onChange={handleFileChange}
-            />
-          </label>
-        </section>
+              <label className="file-upload-label">
+                <div className="file-upload-text">
+                  <p className="file-name">{file ? `Selected: ${file.name}` : 'Click to upload a page file'}</p>
+                  <p className="file-hint">The file is sent securely to the AI for analysis only when you submit.</p>
+                </div>
+                <div className="file-browse-btn">Browse file</div>
+                <input className="file-input-hidden" type="file" accept=".html,.ejs,.jsx" onChange={handleFileChange} />
+              </label>
+            </section>
 
-        {/* Layout selection */}
-        <section>
-          <h2>
-            2. Which layout do you want to use?
-          </h2>
-          <p>
-            Choose the structure that best matches how you want your page
-            arranged.
-          </p>
-
-          <div>
-            {layoutOptions.map((layout) => {
-              const isActive = selectedLayout === layout.id
-              return (
-                <button
-                  key={layout.id}
-                  type="button"
-                  onClick={() => setSelectedLayout(layout.id)}
-                  aria-pressed={isActive}
-                >
-                  <img src={layout.image} alt={layout.title} />
-                  <p>{layout.title}</p>
-                </button>
-              )
-            })}
-          </div>
-        </section>
-
-        {/* Color scheme */}
-        <section>
-          <h2>
-            3. Which color scheme should we use?
-          </h2>
-          <p>
-            Pick up to four key colors for your brand or page.
-          </p>
-
-          <div>
-            {colors.map((value, index) => (
-              <div key={index}>
-                <input
-                  type="color"
-                  value={value}
-                  onChange={(e) => handleColorChange(index, e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={value}
-                  onChange={(e) => handleColorChange(index, e.target.value)}
-                />
+            {/* Layout selection */}
+            <section className="input-section">
+              <h2 className="section-title">2. Which layout do you want to use?</h2>
+              <p className="section-desc">Choose the structure that best matches how you want your page arranged.</p>
+              <div className="layout-grid">
+                {layoutOptions.map((layout) => {
+                  const isActive = selectedLayout === layout.id
+                  return (
+                    <button
+                      key={layout.id}
+                      type="button"
+                      className={`layout-card ${isActive ? 'layout-card--active' : ''}`}
+                      onClick={() => setSelectedLayout(layout.id)}
+                      aria-pressed={isActive}
+                    >
+                      <img className="layout-img" src={layout.image} alt={layout.title} />
+                      <p className="layout-label">{layout.title}</p>
+                    </button>
+                  )
+                })}
               </div>
-            ))}
-          </div>
+            </section>
 
-          <button
-            type="button"
-            onClick={handleAddColor}
-            disabled={colors.length >= 4}
-          >
-            <span>
-              +
-            </span>
-            Add color
-          </button>
-        </section>
+            {/* Color scheme */}
+            <section className="input-section">
+              <h2 className="section-title">3. Which color scheme should we use?</h2>
+              <p className="section-desc">Pick up to four key colors for your brand or page.</p>
+              <div className="color-row">
+                {colors.map((value, index) => (
+                  <div className="color-swatch" key={index}>
+                    <input className="color-picker" type="color" value={value} onChange={(e) => handleColorChange(index, e.target.value)} />
+                    <input className="color-hex" type="text" value={value} onChange={(e) => handleColorChange(index, e.target.value)} />
+                  </div>
+                ))}
+              </div>
+              <button className="btn-add-color" type="button" onClick={handleAddColor} disabled={colors.length >= 4}>
+                <span>+</span> Add color
+              </button>
+            </section>
 
-        {/* Font selection */}
-        <section>
-          <h2>
-            4. Which font group should we use?
-          </h2>
-          <p>
-            Choose a primary font group.
-          </p>
+            {/* Font selection */}
+            <section className="input-section">
+              <h2 className="section-title">4. Which font group should we use?</h2>
+              <p className="section-desc">Choose a primary font group.</p>
+              <select className="font-select" value={selectedFont} onChange={(e) => setSelectedFont(e.target.value)}>
+                {fontOptions.map((font) => (
+                  <option key={font.id} value={font.css}>{font.label}</option>
+                ))}
+              </select>
+              <div className="font-grid">
+                {fontOptions.map((font) => {
+                  const isActive = selectedFont === font.css
+                  return (
+                    <button
+                      key={font.id}
+                      type="button"
+                      className={`font-card ${isActive ? 'font-card--active' : ''}`}
+                      onClick={() => setSelectedFont(font.css)}
+                      aria-pressed={isActive}
+                      style={{ fontFamily: font.css }}
+                    >
+                      <p className="font-card-label">{font.label}</p>
+                      <p className="font-card-preview">The quick brown fox jumps over the lazy dog.</p>
+                    </button>
+                  )
+                })}
+              </div>
+            </section>
 
-          <select
-            value={selectedFont}
-            onChange={(e) => setSelectedFont(e.target.value)}
-          >
-            {fontOptions.map((font) => (
-              <option key={font.id} value={font.css}>
-                {font.label}
-              </option>
-            ))}
-          </select>
+            {error && <p className="error-msg">{error}</p>}
 
-          <div>
-            {fontOptions.map((font) => {
-              const isActive = selectedFont === font.css
-              return (
-                <button
-                  key={font.id}
-                  type="button"
-                  onClick={() => setSelectedFont(font.css)}
-                  aria-pressed={isActive}
-                  style={{
-                    fontFamily: font.css,
-                    border: isActive ? '2px solid #007BFF' : '1px solid #ccc',
-                    padding: '0.5rem',
-                    margin: '0.25rem',
-                    textAlign: 'left',
-                    background: isActive ? '#e7f1ff' : '#fff'
-                  }}
-                >
-                  <p>
-                    {font.label}
-                  </p>
-                  <p>
-                    The quick brown fox jumps over the lazy dog.
-                  </p>
-                </button>
-              )
-            })}
-          </div>
-          
-        </section>
+            <div className="submit-row">
+              <button className="btn-submit" type="submit" disabled={isSubmitting}>
+                {isSubmitting && <span className="spinner" />}
+                {isSubmitting ? 'Processing with AI…' : 'Generate output'}
+              </button>
+              {isSubmitting && <p className="submitting-hint">Processing your layout and design choices.</p>}
+            </div>
 
-        {error && (
-          <p>
-            {error}
-          </p>
-        )}
-
-        <div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-          >
-            {isSubmitting && (
-              <span />
-            )}
-            {isSubmitting ? 'Processing with AI…' : 'Generate output'}
-          </button>
-
-          {isSubmitting && (
-            <p>
-              Processing your layout and design choices.
-            </p>
-          )}
+          </form>
         </div>
-      </form>
-      </div>
-      <Footer />
+        <Footer />
       </DottedSurface>
     </>
   )

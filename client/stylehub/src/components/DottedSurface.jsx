@@ -66,7 +66,7 @@ function DottedSurface({ children, style, theme = 'dark', ...props }) {
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 12,
+      size: 13,
       vertexColors: true,
       transparent: true,
       opacity: 0.8,
@@ -121,18 +121,25 @@ function DottedSurface({ children, style, theme = 'dark', ...props }) {
   }, [theme]);
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', ...style }} {...props}>
-      <div
-        ref={containerRef}
-        style={{
-          pointerEvents: 'none',
-          position: 'fixed',
-          top: 0, left: 0, right: 0, bottom: 0,
-          zIndex: -10,
-        }}
-      />
-      {children}
-    </div>
+    // Outer div — add background
+<div style={{ position: 'relative', minHeight: '100vh', background: '#0F0B0A', ...style }} {...props}>
+
+  <div
+    ref={containerRef}
+    style={{
+      pointerEvents: 'none',
+      position: 'fixed',
+      top: 0, left: 0, right: 0, bottom: 0,
+      zIndex: 0,          // ← was -10, now 0
+    }}
+  />
+
+  {/* Wrap children so they sit ABOVE the canvas */}
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    {children}
+  </div>
+
+</div>
   );
 }
 

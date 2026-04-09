@@ -1,7 +1,8 @@
-
 import { Link, isRouteErrorResponse, useRouteError } from "react-router-dom";
-import Header from '../components/Header'
+import Header from '../components/Navbar.jsx'
 import Footer from '../components/Footer'
+import DottedSurface from '../components/DottedSurface'
+import '../styles/ErrorPage.css'
 
 function ErrorPage() {
   const error = useRouteError();
@@ -11,7 +12,6 @@ function ErrorPage() {
 
   if (isRouteErrorResponse(error)) {
     status = error.status;
-
     if (status === 404) {
       message = "The page you're looking for doesn't exist.";
     } else {
@@ -25,15 +25,28 @@ function ErrorPage() {
 
   return (
     <>
-      <Header />
-      <h1>{status === 404 ? "404 - Page Not Found" : "Error"}</h1>
-      <p>{message}</p>
-      <Link to="/">Go back home</Link>
+      <DottedSurface theme="dark">
+        <Header />
 
-      {import.meta.env.DEV && status !== 404 ? (
-        <pre style={{ whiteSpace: "pre-wrap" }}>{String((error && error.stack) || error)}</pre>
-      ) : null}
-      <Footer />
+        <div className="error-page">
+
+          <div className="error-body">
+            <p className="error-code">404</p>
+            <h1 className="error-title">Faaaahhhh !</h1>
+            <h1 className="error-title"> Page Not Found</h1>
+            <p className="error-message">
+              The page you are looking for doesn't exist. Click the button below to go to the homepage.
+            </p>
+          </div>
+
+          <Link to="/" className="btn-home">
+            Go back home
+          </Link>
+
+        </div>
+
+        <Footer />
+      </DottedSurface>
     </>
   )
 }
