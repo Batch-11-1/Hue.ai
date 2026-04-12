@@ -4,6 +4,7 @@ import axios from 'axios'
 import Header from '../components/Navbar.jsx'
 import Footer from '../components/Footer'
 import DottedSurface from '../components/DottedSurface'
+import { WaitAnimation } from '../components/WaitAnimation'
 import '../styles/Input.css'
 
 function Input() {
@@ -11,7 +12,9 @@ function Input() {
   const [file, setFile] = useState(null)
   const [selectedLayout, setSelectedLayout] = useState(null)
   const [colors, setColors] = useState(['#323233', '#eeeeee'])
-  const [selectedFont, setSelectedFont] = useState('Inter, system-ui, sans-serif')
+  const [selectedFont, setSelectedFont] = useState(
+    'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+  )
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -35,10 +38,21 @@ function Input() {
   ]
 
   const fontOptions = [
-    { id: 'serif', label: 'Serif', css: 'serif' },
-    { id: 'sans-serif', label: 'Sans Serif', css: 'system-ui, sans-serif' },
+    { id: 'system-sans', label: 'System sans', css: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' },
+    { id: 'arial-sans', label: 'Arial / Helvetica', css: 'Arial, Helvetica, sans-serif' },
+    { id: 'georgia-serif', label: 'Georgia / Times', css: 'Georgia, Cambria, "Times New Roman", Times, serif' },
+    { id: 'verdana', label: 'Verdana / Geneva', css: 'Verdana, Geneva, sans-serif' },
+    { id: 'trebuchet', label: 'Trebuchet MS', css: '"Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", sans-serif' },
     { id: 'monospace', label: 'Monospace', css: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace' },
-    { id: 'script', label: 'Script', css: '"Brush Script MT", "Lucida Handwriting", cursive' },
+    { id: 'inter', label: 'Inter', css: '"Inter", system-ui, sans-serif' },
+    { id: 'roboto', label: 'Roboto', css: '"Roboto", sans-serif' },
+    { id: 'open-sans', label: 'Open Sans', css: '"Open Sans", sans-serif' },
+    { id: 'lato', label: 'Lato', css: '"Lato", sans-serif' },
+    { id: 'poppins', label: 'Poppins', css: '"Poppins", sans-serif' },
+    { id: 'dm-sans', label: 'DM Sans', css: '"DM Sans", sans-serif' },
+    { id: 'merriweather', label: 'Merriweather', css: '"Merriweather", Georgia, serif' },
+    { id: 'playfair', label: 'Playfair Display', css: '"Playfair Display", Georgia, serif' },
+    { id: 'libre-baskerville', label: 'Libre Baskerville', css: '"Libre Baskerville", Georgia, serif' },
   ]
 
   const handleFileChange = (e) => {
@@ -186,12 +200,20 @@ function Input() {
 
             {error && <p className="error-msg">{error}</p>}
 
+            {isSubmitting && (
+              <div className="loading-overlay">
+                <div className="loading-spinner-container">
+                  <WaitAnimation />
+                  <p className="loading-text">Processing with AI…</p>
+                  <p className="loading-hint">Processing your layout and design choices.</p>
+                </div>
+              </div>
+            )}
+
             <div className="submit-row">
               <button className="btn-submit" type="submit" disabled={isSubmitting}>
-                {isSubmitting && <span className="spinner" />}
                 {isSubmitting ? 'Processing with AI…' : 'Generate output'}
               </button>
-              {isSubmitting && <p className="submitting-hint">Processing your layout and design choices.</p>}
             </div>
 
           </form>

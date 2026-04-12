@@ -4,6 +4,7 @@ import axios from "axios"
 import Header from "../components/Navbar.jsx"
 import Footer from "../components/Footer"
 import DottedSurface from '../components/DottedSurface'
+import { WaitAnimation } from '../components/WaitAnimation'
 import '../styles/Output.css'
 
 function Output() {
@@ -151,6 +152,15 @@ function Output() {
                 {viewMode === "mobile" ? "Mobile viewport" : "Laptop viewport"}
               </span>
             </div>
+
+            {(loadingPreview || loadingAdjust) && (
+              <div className="loading-overlay">
+                <div className="loading-spinner-container">
+                  <WaitAnimation />
+                  <p className="loading-text">{loadingPreview ? 'Loading preview…' : 'Improving design…'}</p>
+                </div>
+              </div>
+            )}
 
             <div className="preview-shell">
               <div className="preview-bar">

@@ -1,13 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500&display=swap');
 
-@font-face {
-  font-family: 'Necosmic';
-  src: url('/fonts/Necosmic.woff2') format('woff2'),
-       url('/fonts/Necosmic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 /* ── Tokens ─────────────────────────────────────────── */
 :root {
   --clr-black:       #0F0B0A;
@@ -46,7 +38,7 @@ html, body, #root {
 
 /* ── Title ──────────────────────────────────────────── */
 .hero-title {
-  font-family: 'Necosmic', sans-serif;
+  font-family: 'Sora', sans-serif;
   font-size: clamp(3.5rem, 10vw, 8rem);
   font-weight: normal;
   letter-spacing: 0.08em;
@@ -55,6 +47,13 @@ html, body, #root {
   text-shadow:
     0 0 40px rgba(126, 59, 237, 0.35),
     0 0 80px rgba(126, 59, 237, 0.15);
+  animation: fadeUp 2.0s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-logo {
+  width: 300px;
+  height: auto;
+  filter: drop-shadow(0 0 15px rgba(126, 59, 237, 0.8));
   animation: fadeUp 2.0s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 

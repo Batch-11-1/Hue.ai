@@ -20,4 +20,4 @@ Front end (CSS)
     Afsel, Sahad
 
 Back end (Express)
-    Ananda, Alfin, Gopika
+    Alfin, Ananda, Gopika

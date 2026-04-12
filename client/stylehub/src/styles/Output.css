@@ -193,7 +193,7 @@
   box-shadow:
     0 0 0 1px var(--clr-white-10),
     0 24px 60px rgba(0, 0, 0, 0.5);
-  max-width: 100%;
+  max-width: fit-content;
 }
 
 .preview-bar {
@@ -383,4 +383,44 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* ── Loading Overlay ────────────────────────────────── */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 11, 10, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.loading-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.loading-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--clr-white);
+  letter-spacing: 0.02em;
+}
+
+.loading-hint {
+  font-size: 0.85rem;
+  color: var(--clr-white-50);
+  letter-spacing: 0.01em;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }

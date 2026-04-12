@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import Header from '../components/Navbar.jsx'
 import Footer from '../components/Footer'
 import DottedSurface from '../components/DottedSurface'
+import { WaitAnimation } from '../components/WaitAnimation'
 import '../styles/Result.css'
 
 function extractCssFromHtml(html) {
@@ -123,6 +124,15 @@ function Result() {
         <Header />
 
         <div className="result-page">
+
+          {isSubmitting && (
+            <div className="loading-overlay">
+              <div className="loading-spinner-container">
+                <WaitAnimation />
+                <p className="loading-text">Processing…</p>
+              </div>
+            </div>
+          )}
 
           {/* Hero */}
           <div className="result-hero">

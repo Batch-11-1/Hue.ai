@@ -32,11 +32,8 @@ function ErrorPage() {
 
           <div className="error-body">
             <p className="error-code">404</p>
-            <h1 className="error-title">Faaaahhhh !</h1>
             <h1 className="error-title"> Page Not Found</h1>
-            <p className="error-message">
-              The page you are looking for doesn't exist. Click the button below to go to the homepage.
-            </p>
+            <p className="error-message">{message}</p>
           </div>
 
           <Link to="/" className="btn-home">
