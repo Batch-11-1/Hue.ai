@@ -105,7 +105,7 @@ function Input() {
           <form className="input-form" onSubmit={handleSubmit}>
 
             <header className="input-hero">
-              <p className="input-eyebrow">HUE.ai AI</p>
+              <p className="input-eyebrow">HUE.AI</p>
               <h1 className="input-title">Upload your page & design preferences</h1>
               <p className="input-subtitle">
                 Provide your page file and a few quick choices so the AI can

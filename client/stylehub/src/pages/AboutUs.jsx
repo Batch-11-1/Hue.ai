@@ -24,7 +24,7 @@ function AboutUs() {
 
   const uiuxDesigners = [
     { name: 'Afsal.A', role: 'UI/UX Designer', qualification: 'Mern Stack Developer', github: 'https://github.com/afsalazeez29-code', linkedin: 'https://www.linkedin.com/in/afsal-a-azeez29' },
-    { name: 'Sahad', role: 'Logo and Animation Designer', qualification: 'Python Fullstack Developer', github: 'https://github.com/sahadnishy-css', linkedin: 'https://www.linkedin.com/in/member4' },
+    { name: 'Sahad', role: 'Logo and Animation Designer', qualification: 'Python Fullstack Developer', github: 'https://github.com/sahadnishy-css', linkedin: 'https://www.linkedin.com/in/sahad-nishy-8b116b386' },
   ]
 
   const MemberCard = ({ member, variant }) => (

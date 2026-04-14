@@ -102,7 +102,7 @@ function Output() {
 
           {/* Page title */}
           <div className="output-hero">
-            <p className="output-eyebrow">HUE.ai AI</p>
+            <p className="output-eyebrow">HUE.AI</p>
             <h1 className="output-title">Output page</h1>
           </div>
 

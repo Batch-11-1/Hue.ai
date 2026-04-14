@@ -136,7 +136,7 @@ function Result() {
 
           {/* Hero */}
           <div className="result-hero">
-            <p className="result-eyebrow">HUE.ai AI</p>
+            <p className="result-eyebrow">HUE.AI</p>
             <h1 className="result-title">Final result</h1>
           </div>
 
