@@ -4,7 +4,7 @@ This document outlines the code ownership for the HUE.ai project, which is an ap
 - **Concept**: @Renjeesh
 - **Project Architecture**: @Jerin
 ### Front end (React)
-- @Archana
+- @archanarx
 - @Devika
 - @Ijas
 - @Karthika
@@ -12,11 +12,11 @@ This document outlines the code ownership for the HUE.ai project, which is an ap
 - @Shino
 - @Vivek
 ### Front end (CSS)
-- @Afsel
+- @afsalazeez29-code
 - @Sahad
 ### Back end (Express)
-- @Alfin
-- @Ananda
+- @Alfin77
+- @anandapavanan
 - @Gopika
 ## Code Ownership
 - **Concept**: @Renjeesh is responsible for the overall concept of the application
@@ -25,12 +25,12 @@ This document outlines the code ownership for the HUE.ai project, which is an ap
 - **Front end (CSS)**: The team members listed under this category are responsible for the CSS frontend design and styling
 - **Back end (Express)**: The team members listed under this category are responsible for the Express backend development
 ## Allocation of Files
-- /server/stylehub/controllers - @Alfin, @Ananda, @Gopika, @Renjeesh
+- /server/stylehub/controllers - @Alfin77, @anandapavanan, @Gopika, @Renjeesh
 - /server/stylehub/routes - @Jerin
-- /server/stylehub/utils - @Alfin, @Ananda, @Gopika, @Renjeesh
-- /client/src/components - @Ijas, @Karthika, @Afsal, @Sahad
-- /client/src/pages - @Archana, @Devika, @Karthika, @Noufa, @Shino, @Vivek
-- /client/src/styles - @Afsel
+- /server/stylehub/utils - @Alfin77, @anandapavanan, @Gopika, @Renjeesh
+- /client/src/components - @Ijas, @Karthika, @afsalazeez29-code, @Sahad
+- /client/src/pages - @archanarx, @Devika, @Karthika, @Noufa, @Shino, @Vivek
+- /client/src/styles - @afsalazeez29-code
 - /client/src/utils/router - @Jerin
 - /client/src/assets - @Noufa, @Sahad
 
