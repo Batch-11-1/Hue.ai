@@ -1,38 +1,24 @@
 # HUE.ai Code Ownership
-This document outlines the code ownership for the HUE.ai project, which is an application designed to style webpages using AI. The project is structured into different components, and each component has designated owners responsible for its development and maintenance.
-## Team and Roles
-- **Concept**: @Renjeesh
-- **Project Architecture**: @jerinmt
-### Front end (React)
-- @archanarx
-- @Devika
-- @Ijas
-- @Karthika
-- @Noufa
-- @Shino
-- @Vivek
-### Front end (CSS)
-- @Afsal A
-- @Sahad
-### Back end (Express)
-- @Alfin77
-- @anandapavanan
-- @Gopika
-## Code Ownership
-- **Concept**: @Renjeesh is responsible for the overall concept of the application
-- **Project Architecture**: @Jerin Moni Thomas is responsible for the overall project architecture
-- **Front end (React)**: The team members listed under this category are responsible for the React development
-- **Front end (CSS)**: The team members listed under this category are responsible for the CSS frontend design and styling
-- **Back end (Express)**: The team members listed under this category are responsible for the Express backend development
-## Allocation of Files
-- /server/stylehub/controllers - @Alfin77, @anandapavanan, @Gopika, @Renjeesh
-- /server/stylehub/routes - @Jerin Moni Thomas
-- /server/stylehub/utils - @Alfin77, @anandapavanan, @Gopika, @Renjeesh
-- /client/src/components - @Ijas, @Karthika, @Afsal A, @Sahad
-- /client/src/pages - @archanarx, @Devika, @Karthika, @Noufa, @Shino, @Vivek
-- /client/src/styles - @Afsal A
-- /client/src/utils/router - @Jerin Moni Thomas
-- /client/src/assets - @Noufa, @Sahad
+# This document outlines the code ownership for the HUE.ai project.
+# The project is an application designed to style webpages using AI.
 
-## Conclusion
-This code ownership document serves as a guide for the HUE.ai project, ensuring that each team member knows their responsibilities and areas of focus. It promotes accountability and helps in the efficient management of the project. Each member is encouraged to collaborate and communicate effectively to achieve the best results for the HUE.ai application.
+# Team and Roles
+# - Concept: Renjeesh
+# - Project Architecture: Jerin
+# - Front end (React): Archana, Devika, Ijas, Karthika, Noufa, Shino, Vivek
+# - Front end (CSS): Afsal, Sahad
+# - Back end (Express): Alfin, Ananda, Gopika
+
+# Global Owners
+* @jerinmt @Renjeesh
+
+# Code Ownership Rules
+/server/stylehub/controllers/ @Alfin77 @anandapavanan @Gopika @Renjeesh
+/server/stylehub/routes/ @jerinmt
+/server/stylehub/utils/ @Alfin77 @anandapavanan @Gopika @Renjeesh
+
+/client/stylehub/src/components/ @Ijas @Karthika @afsalazeez29 @Sahad
+/client/stylehub/src/pages/ @archanarx @Devika @Karthika @Noufa @Shino @Vivek
+/client/stylehub/src/styles/ @afsalazeez29
+/client/stylehub/src/utils/router/ @jerinmt
+/client/stylehub/src/assets/ @Noufa @Sahad
