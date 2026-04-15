@@ -2,7 +2,7 @@
 This document outlines the code ownership for the HUE.ai project, which is an application designed to style webpages using AI. The project is structured into different components, and each component has designated owners responsible for its development and maintenance.
 ## Team and Roles
 - **Concept**: @Renjeesh
-- **Project Architecture**: @Jerin
+- **Project Architecture**: @jerinmt
 ### Front end (React)
 - @archanarx
 - @Devika
@@ -12,7 +12,7 @@ This document outlines the code ownership for the HUE.ai project, which is an ap
 - @Shino
 - @Vivek
 ### Front end (CSS)
-- @afsalazeez29-code
+- @Afsal A
 - @Sahad
 ### Back end (Express)
 - @Alfin77
@@ -20,18 +20,18 @@ This document outlines the code ownership for the HUE.ai project, which is an ap
 - @Gopika
 ## Code Ownership
 - **Concept**: @Renjeesh is responsible for the overall concept of the application
-- **Project Architecture**: @Jerin is responsible for the overall project architecture
+- **Project Architecture**: @Jerin Moni Thomas is responsible for the overall project architecture
 - **Front end (React)**: The team members listed under this category are responsible for the React development
 - **Front end (CSS)**: The team members listed under this category are responsible for the CSS frontend design and styling
 - **Back end (Express)**: The team members listed under this category are responsible for the Express backend development
 ## Allocation of Files
 - /server/stylehub/controllers - @Alfin77, @anandapavanan, @Gopika, @Renjeesh
-- /server/stylehub/routes - @Jerin
+- /server/stylehub/routes - @Jerin Moni Thomas
 - /server/stylehub/utils - @Alfin77, @anandapavanan, @Gopika, @Renjeesh
-- /client/src/components - @Ijas, @Karthika, @afsalazeez29-code, @Sahad
+- /client/src/components - @Ijas, @Karthika, @Afsal A, @Sahad
 - /client/src/pages - @archanarx, @Devika, @Karthika, @Noufa, @Shino, @Vivek
-- /client/src/styles - @afsalazeez29-code
-- /client/src/utils/router - @Jerin
+- /client/src/styles - @Afsal A
+- /client/src/utils/router - @Jerin Moni Thomas
 - /client/src/assets - @Noufa, @Sahad
 
 ## Conclusion
