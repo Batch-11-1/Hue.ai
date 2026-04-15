@@ -10,15 +10,15 @@
 # - Back end (Express): Alfin, Ananda, Gopika
 
 # Global Owners
-* @jerinmt @Renjeesh
+* @jerinmt @renjeesh-rs
 
 # Code Ownership Rules
-/server/stylehub/controllers/ @Alfin77 @anandapavanan @Gopika @Renjeesh
+/server/stylehub/controllers/ @Alfin77 @anandapavanan @Gopi121202 @renjeesh-rs
 /server/stylehub/routes/ @jerinmt
-/server/stylehub/utils/ @Alfin77 @anandapavanan @Gopika @Renjeesh
+/server/stylehub/utils/ @Alfin77 @anandapavanan @Gopi121202 @renjeesh-rs
 
-/client/stylehub/src/components/ @Ijas @Karthika @afsalazeez29 @Sahad
-/client/stylehub/src/pages/ @archanarx @Devika @Karthika @Noufa @Shino @Vivek
+/client/stylehub/src/components/ @Ijas @Karthika @afsalazeez29 @sahadnishy-css
+/client/stylehub/src/pages/ @archanarx @Devika @Karthika @noufasaji-maker @Shino @Vivek
 /client/stylehub/src/styles/ @afsalazeez29
 /client/stylehub/src/utils/router/ @jerinmt
-/client/stylehub/src/assets/ @Noufa @Sahad
+/client/stylehub/src/assets/ @noufasaji-maker @sahadnishy-css
