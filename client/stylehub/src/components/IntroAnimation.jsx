@@ -33,7 +33,7 @@ export function IntroAnimation() {
         <motion.div
         initial={{ rotateZ: 0 }}
         animate={{ rotateZ: [0, 0, 720, 900], scale: [0, 0.1, 0.9, 0.9]}}
-        transition={{duration: 5, times: [0, 0.05, 0.6, 1], ease: 'easeInOut'}}
+        transition={{duration: 5, times: [0, 0.05, 0.4, 1], ease: 'easeInOut'}}
         style={{position: 'absolute', transformOrigin: "25% 30%", height: '200px', width: '200px', left: '38%', transform: 'translateX(-50%)', margin: '0px'}}
         >
       <motion.img
@@ -46,7 +46,7 @@ export function IntroAnimation() {
         transition={{
           duration: 5,
           ease: 'easeInOut',
-          times: [0, 0.05, 0.6, 1]
+          times: [0, 0.05, 0.4, 1]
         }}
         style={{
           display: 'block',
@@ -68,7 +68,7 @@ export function IntroAnimation() {
         transition={{
           duration: 5,
           ease: 'easeInOut',
-          times: [0, 0.05, 0.6, 1]
+          times: [0, 0.05, 0.4, 1]
         }}
         style={{
           display: 'block',

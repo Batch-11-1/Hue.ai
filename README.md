@@ -11,8 +11,7 @@ Team and Roles
 
 Concept - Renjeesh
 
-Project management - Jerin
-<<<<<<< HEAD
+Project Architecture - Jerin
 
 Front end (React)
     Archana, Devika, Ijas, Karthika, Noufa, Shino, Vivek
@@ -22,5 +21,3 @@ Front end (CSS)
 
 Back end (Express)
     Alfin, Ananda, Gopika
-=======
->>>>>>> 3a556d17ed312006c39ed8738d9bee2222961e78

@@ -30,7 +30,6 @@ export function WaitAnimation() {
         top: '50%',
         left: '50%',
         transform: 'translateX(-50%)',
-        marginInline: 'auto',
       }}
     >
       <motion.img
@@ -55,8 +54,8 @@ export function WaitAnimation() {
         style={{
           display: 'block',
           position: 'absolute',
-          left: 0,
-          top: 0,
+          left: '40%',
+          top: '37%',
           width: '100px',
           height: 'auto',
           scaleY: -1,
@@ -83,8 +82,8 @@ export function WaitAnimation() {
         style={{
           display: 'block',
           position: 'absolute',
-          left: 0,
-          top: 40,
+          left: '40%',
+          top: '50%',
           width: '100px',
           height: 'auto',
           opacity: 0.8,
