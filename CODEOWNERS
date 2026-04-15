@@ -1,39 +1,38 @@
-<!-- This file is to implement the code ownership of this group project -->
 # HUE.ai Code Ownership
 This document outlines the code ownership for the HUE.ai project, which is an application designed to style webpages using AI. The project is structured into different components, and each component has designated owners responsible for its development and maintenance.
 ## Team and Roles
-- **Concept**: Renjeesh
-- **Project Architecture**: Jerin
+- **Concept**: @Renjeesh
+- **Project Architecture**: @Jerin
 ### Front end (React)
-- Archana
-- Devika
-- Ijas
-- Karthika
-- Noufa
-- Shino
-- Vivek
+- @Archana
+- @Devika
+- @Ijas
+- @Karthika
+- @Noufa
+- @Shino
+- @Vivek
 ### Front end (CSS)
-- Afsel
-- Sahad
+- @Afsel
+- @Sahad
 ### Back end (Express)
-- Alfin
-- Ananda
-- Gopika
+- @Alfin
+- @Ananda
+- @Gopika
 ## Code Ownership
-- **Concept**: Renjeesh is responsible for the overall concept of the application
-- **Project Architecture**: Jerin is responsible for the overall project architecture
+- **Concept**: @Renjeesh is responsible for the overall concept of the application
+- **Project Architecture**: @Jerin is responsible for the overall project architecture
 - **Front end (React)**: The team members listed under this category are responsible for the React development
 - **Front end (CSS)**: The team members listed under this category are responsible for the CSS frontend design and styling
 - **Back end (Express)**: The team members listed under this category are responsible for the Express backend development
 ## Allocation of Files
-- /server/stylehub/controllers - Alfin, Ananda, Gopika, Renjeesh
-- /server/stylehub/routes - Jerin
-- /server/stylehub/utils - Alfin, Ananda, Gopika, Renjeesh
-- /client/src/components - Ijas, Karthika, Afsal, Sahad
-- /client/src/pages - Archana, Devika, Karthika, Noufa, Shino, Vivek
-- /client/src/styles - Afsel
-- /client/src/utils/router - Jerin
-- /client/src/assets - Noufa, Sahad
+- /server/stylehub/controllers - @Alfin, @Ananda, @Gopika, @Renjeesh
+- /server/stylehub/routes - @Jerin
+- /server/stylehub/utils - @Alfin, @Ananda, @Gopika, @Renjeesh
+- /client/src/components - @Ijas, @Karthika, @Afsal, @Sahad
+- /client/src/pages - @Archana, @Devika, @Karthika, @Noufa, @Shino, @Vivek
+- /client/src/styles - @Afsel
+- /client/src/utils/router - @Jerin
+- /client/src/assets - @Noufa, @Sahad
 
 ## Conclusion
 This code ownership document serves as a guide for the HUE.ai project, ensuring that each team member knows their responsibilities and areas of focus. It promotes accountability and helps in the efficient management of the project. Each member is encouraged to collaborate and communicate effectively to achieve the best results for the HUE.ai application.
