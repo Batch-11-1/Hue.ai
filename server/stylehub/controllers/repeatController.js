@@ -13,17 +13,7 @@ const repeatPrompt = async (req, res, next) => {
   try {
     console.log("repeatController.repeatPrompt called");
 
-    const devstralApiKey =
-      process.env.OPENROUTER_API_KEY || process.env.DEVSTRAL_API_KEY;
-
-    if (!devstralApiKey) {
-      return res
-        .status(500)
-        .json({
-          error:
-            "Missing Devstral API key in environment variables. Set OPENROUTER_API_KEY (or DEVSTRAL_API_KEY).",
-        });
-    }
+    // API key check is handled inside callDevstral
 
     const styledHtml = pickFirstString(req.body, [
       "styledHtml",

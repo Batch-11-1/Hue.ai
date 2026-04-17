@@ -3,27 +3,35 @@ const axios = require("axios");
 async function callDevstral(prompt, options = {}) {
   const rawApiKey =
     process.env.OPENROUTER_API_KEY ||
-    process.env.DEVSTRAL_API_KEY;
+    process.env.DEVSTRAL_API_KEY ||
+    process.env.MISTRAL_API_KEY;
+
   const apiKey = typeof rawApiKey === "string"
     ? rawApiKey.trim().replace(/^["']|["']$/g, "")
     : rawApiKey;
 
-  if (!apiKey) {
+  if (!apiKey || apiKey === "undefined" || apiKey === "null") {
     throw new Error(
-      "Missing Devstral API key. Set OPENROUTER_API_KEY (or DEVSTRAL_API_KEY)."
+      "Missing Devstral API key. Please check your .env file and ensure OPENROUTER_API_KEY or DEVSTRAL_API_KEY is set."
     );
   }
+
+  const useMistral =
+    (!!process.env.MISTRAL_API_KEY && !process.env.OPENROUTER_API_KEY) ||
+    apiKey.length === 32; // Mistral keys are typically 32 chars without prefix
 
   const endpoint =
     options.endpoint ||
     process.env.DEVSTRAL_API_URL ||
-    "https://openrouter.ai/api/v1/chat/completions";
+    (useMistral
+      ? "https://api.mistral.ai/v1/chat/completions"
+      : "https://openrouter.ai/api/v1/chat/completions");
   const normalizedEndpoint = String(endpoint).trim();
 
   const model =
     options.model ||
     process.env.DEVSTRAL_MODEL ||
-    "mistralai/devstral-small:free";
+    (useMistral ? "codestral-latest" : "mistralai/devstral-small:free");
 
   const maxTokens =
     options.maxOutputTokens ||
@@ -56,8 +64,6 @@ async function callDevstral(prompt, options = {}) {
     {
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        // Some providers/proxies validate this alias instead.
-        Authentication: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
         ...(process.env.OPENROUTER_HTTP_REFERER
           ? { "HTTP-Referer": process.env.OPENROUTER_HTTP_REFERER }
