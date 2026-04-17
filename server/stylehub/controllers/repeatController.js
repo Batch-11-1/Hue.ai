@@ -1,4 +1,4 @@
-const { callGemini } = require('../utils/geminiUtils');
+const { callDevstral } = require("../utils/devstralUtils");
 
 const pickFirstString = (obj, keys) => {
   if (!obj || typeof obj !== 'object') return null;
@@ -13,21 +13,17 @@ const repeatPrompt = async (req, res, next) => {
   try {
     console.log("repeatController.repeatPrompt called");
 
-    const hfToken = process.env.HUGGINGFACE_API_TOKEN || process.env.HF_API_TOKEN;
-    const googleApiKey = process.env.GOOGLE_API_KEY;
+    const devstralApiKey =
+      process.env.OPENROUTER_API_KEY || process.env.DEVSTRAL_API_KEY;
 
-    if (!hfToken && !googleApiKey) {
+    if (!devstralApiKey) {
       return res
         .status(500)
-        .json({ error: "Missing AI API token in environment variables. Set GOOGLE_API_KEY." });
+        .json({
+          error:
+            "Missing Devstral API key in environment variables. Set OPENROUTER_API_KEY (or DEVSTRAL_API_KEY).",
+        });
     }
-
-    const model =
-      process.env.GEMINI_MODEL ||
-      process.env.GENERATIVE_MODEL ||
-      process.env.HUGGINGFACE_MODEL ||
-      process.env.HF_MODEL ||
-      "gemini-2.5-flash";
 
     const styledHtml = pickFirstString(req.body, [
       "styledHtml",
@@ -91,9 +87,9 @@ const repeatPrompt = async (req, res, next) => {
       .filter(Boolean)
       .join("\n");
 
-    const generated = await callGemini(prompt, {
-      maxOutputTokens: Number(process.env.GEMINI_MAX_OUTPUT_TOKENS || 1800),
-      temperature: Number(process.env.GEMINI_TEMPERATURE || 0.2)
+    const generated = await callDevstral(prompt, {
+      maxOutputTokens: Number(process.env.DEVSTRAL_MAX_OUTPUT_TOKENS || 1800),
+      temperature: Number(process.env.DEVSTRAL_TEMPERATURE || 0.2)
     });
     if (!generated) {
       const errMsg = "No generated HTML returned from the model.";
@@ -112,7 +108,7 @@ const repeatPrompt = async (req, res, next) => {
       return res.status(status).json({
         error:
           (data && data.error) ||
-          `Gemini request failed with status ${status}.`,
+          `Devstral request failed with status ${status}.`,
         details: data,
       });
     }

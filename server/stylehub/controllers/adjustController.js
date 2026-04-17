@@ -1,4 +1,4 @@
-const { callGemini } = require('../utils/geminiUtils');
+const { callDevstral } = require("../utils/devstralUtils");
 
 const stripCodeFences = (text) => {
   if (typeof text !== "string") return "";
@@ -51,7 +51,7 @@ const adjustPrompt = async (req, res) => {
       "Do not add explanations, markdown, or code fences. Output only HTML.", "Keep the structure of the original HTML intact, and only modify it as needed to implement the suggestion.",
     ].join("\n");
 
-    const generatedText = await callGemini(prompt, {
+    const generatedText = await callDevstral(prompt, {
       maxOutputTokens: 900,
       temperature: 0.2
     });

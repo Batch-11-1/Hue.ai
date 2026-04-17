@@ -1,4 +1,4 @@
-const { callGemini } = require('../utils/geminiUtils');
+const { callDevstral } = require("../utils/devstralUtils");
 
 function extractFirstHtmlDocument(text) {
   if (typeof text !== "string") return text;
@@ -73,7 +73,7 @@ const initiatePrompt = async (req, res) => {
       String(htmlFile),
     ].join("\n");
 
-    const generatedText = await callGemini(prompt, {
+    const generatedText = await callDevstral(prompt, {
       maxOutputTokens: 800,
       temperature: 0.7
     });
