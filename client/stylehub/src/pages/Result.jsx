@@ -6,6 +6,7 @@ import Footer from '../components/Footer'
 import DottedSurface from '../components/DottedSurface'
 import { WaitAnimation } from '../components/WaitAnimation'
 import '../styles/Result.css'
+import config from '../utils/config.js'
 
 function extractCssFromHtml(html) {
   if (!html) return ''
@@ -37,11 +38,7 @@ function Result() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const backendBaseUrl = useMemo(() => {
-    const fromEnv = import.meta.env.VITE_BACKEND_BASE_URL
-    const base = fromEnv || 'http://localhost:3000'
-    return String(base).replace(/\/$/, '')
-  }, [])
+  const backendBaseUrl = config.backendBaseUrl;
 
   const finalHtmlFromState = location.state?.finalHtml || location.state?.html || location.state?.htmlCode
   const finalCssFromState = location.state?.finalCss || location.state?.css
@@ -90,14 +87,14 @@ function Result() {
   function handleDownloadHtml() {
     if (!canDownload) return
     const htmlToDownload = (convertedHtml || finalHtmlFromState || '').trim()
-    if (!htmlToDownload) { setError('Final HTML is empty; cannot download.'); return }
+    if (!htmlToDownload) { setError('Final file is empty; cannot download.'); return }
     downloadTextFile('final.html', htmlToDownload, 'text/html;charset=utf-8')
   }
 
-  const htmlButtonLabel = convertedHtml ? 'Download HTML' : 'Download as single file'
+  const htmlButtonLabel = convertedHtml ? 'Download HTML or JSX' : 'Download as single file'
 
   async function handleDownloadCss() {
-    if (!canDownload) { setError('Final HTML is missing; cannot generate CSS.'); return }
+    if (!canDownload) { setError('Final file is missing; cannot generate CSS.'); return }
     setError('')
     setIsSubmitting(true)
     try {
@@ -143,7 +140,7 @@ function Result() {
           {/* Missing HTML warning */}
           {!canDownload ? (
             <div className="banner banner--error">
-              Final HTML is missing. Generate a result first, then come back here.
+              Final file is missing. Generate a result first, then come back here.
             </div>
           ) : null}
 
@@ -188,22 +185,22 @@ function Result() {
               <h2 className="result-section-title">Restyle again</h2>
             </div>
             <p className="result-section-desc">
-              Upload a new HTML file and submit it along with your current HTML to generate a new styled webpage.
+              Upload a new file and submit it along with your current styling to repeat the styling.
             </p>
 
             <form className="restyle-form" onSubmit={handleRestyleSubmit}>
               <label className="file-upload-label">
                 <div className="file-upload-text">
                   <p className="file-name">
-                    {uploadFile ? `Selected: ${uploadFile.name}` : 'Upload HTML file'}
+                    {uploadFile ? `Selected: ${uploadFile.name}` : 'Upload new file'}
                   </p>
-                  <p className="file-hint">Accepted: .html, .ejs, .jsx, .js, .txt</p>
+                  <p className="file-hint">Accepted: .html, .jsx</p>
                 </div>
                 <div className="file-browse-btn">Browse</div>
                 <input
                   className="file-input-hidden"
                   type="file"
-                  accept=".html,.ejs,.jsx,.js,.txt"
+                  accept=".html,.jsx"
                   onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
                   disabled={isSubmitting}
                 />

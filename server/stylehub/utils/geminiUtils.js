@@ -10,16 +10,15 @@ async function callGemini(prompt, options = {}) {
   const model =
     options.model ||
     process.env.GEMINI_MODEL ||
-    process.env.GENERATIVE_MODEL ||
     'gemini-2.5-flash';
 
   const maxOutputTokens =
     options.maxOutputTokens ||
-    Number(process.env.GEMINI_MAX_OUTPUT_TOKENS || process.env.GENERATIVE_MAX_OUTPUT_TOKENS || 800);
+    Number(process.env.GEMINI_MAX_OUTPUT_TOKENS || 800);
 
   const temperature =
     options.temperature ||
-    Number(process.env.GEMINI_TEMPERATURE || process.env.GENERATIVE_TEMPERATURE || 0.7);
+    Number(process.env.GEMINI_TEMPERATURE || 0.7);
 
   const response = await ai.models.generateContent({
     model,

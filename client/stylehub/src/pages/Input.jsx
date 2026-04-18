@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Header from '../components/Navbar.jsx'
@@ -6,6 +6,7 @@ import Footer from '../components/Footer'
 import DottedSurface from '../components/DottedSurface'
 import { WaitAnimation } from '../components/WaitAnimation'
 import '../styles/Input.css'
+import config from '../utils/config.js'
 
 function Input() {
   const navigate = useNavigate()
@@ -18,11 +19,7 @@ function Input() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
-  const backendBaseUrl = useMemo(() => {
-    const fromEnv = import.meta.env.VITE_BACKEND_BASE_URL
-    const base = fromEnv || 'http://localhost:3000'
-    return String(base).replace(/\/$/, '')
-  }, [])
+  const backendBaseUrl = config.backendBaseUrl;
 
   const layoutOptions = [
     { id: 'assymetricallayout', title: 'assymetricallayout', image: new URL('../assets/pagelayouts/assymetricallayout.jpeg', import.meta.url).href },
@@ -117,7 +114,7 @@ function Input() {
             <section className="input-section">
               <h2 className="section-title">1. Upload your file</h2>
               <p className="section-desc">
-                Accepted formats: <code className="code-tag">.html</code>, <code className="code-tag">.ejs</code>, <code className="code-tag">.jsx</code>
+                Accepted format: <code className="code-tag">.html</code>, <code className="code-tag">.jsx</code>
               </p>
               <label className="file-upload-label">
                 <div className="file-upload-text">
@@ -125,7 +122,7 @@ function Input() {
                   <p className="file-hint">The file is sent securely to the AI for analysis only when you submit.</p>
                 </div>
                 <div className="file-browse-btn">Browse file</div>
-                <input className="file-input-hidden" type="file" accept=".html,.ejs,.jsx" onChange={handleFileChange} />
+                <input className="file-input-hidden" type="file" accept=".html,.jsx" onChange={handleFileChange} />
               </label>
             </section>
 

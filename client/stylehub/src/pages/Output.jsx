@@ -6,17 +6,14 @@ import Footer from "../components/Footer"
 import DottedSurface from '../components/DottedSurface'
 import { WaitAnimation } from '../components/WaitAnimation'
 import '../styles/Output.css'
+import config from "../utils/config.js"
 
 function Output() {
   const location = useLocation()
   const navigate = useNavigate()
   const resultData = location?.state?.result
 
-  const backendBaseUrl = useMemo(() => {
-    const fromEnv = import.meta.env.VITE_BACKEND_BASE_URL
-    const base = fromEnv || 'http://localhost:3000'
-    return String(base).replace(/\/$/, '')
-  }, [])
+  const backendBaseUrl = config.backendBaseUrl;
 
   const extractHtml = (data) => {
     if (!data) return ""
