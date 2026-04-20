@@ -15,9 +15,11 @@ app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 app.use(express.json({ limit: "5mb" }));
 
 // Enable CORS for frontend origin; replace with your client URL in production.
+const allowedOrigin = (process.env.FRONTEND_URL || "http://localhost:5173").replace(/\/$/, "");
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: allowedOrigin,
     methods: ["GET", "POST"],
   })
 )
