@@ -87,7 +87,7 @@ function Result() {
       if (!newHtml || newHtml.trim().length === 0) throw new Error('Server response did not include updated HTML.')
       navigate('/output', { replace: true, state: { result: newHtml } })
     } catch (err) {
-      setError(err?.response?.data?.message || err?.message || 'Restyle request failed.')
+      setError(err?.response?.data?.error || err?.response?.data?.message || err?.message || 'Restyle request failed.')
     } finally {
       setIsSubmitting(false)
     }
@@ -116,7 +116,7 @@ function Result() {
       setConvertedCss(cssContent)
       downloadTextFile('styles.css', cssContent, 'text/css;charset=utf-8')
     } catch (err) {
-      setError(err?.response?.data?.error || err?.message || 'Failed to generate CSS through backend.')
+      setError(err?.response?.data?.error || err?.response?.data?.message || err?.message || 'Failed to generate CSS through backend.')
     } finally {
       setIsSubmitting(false)
     }

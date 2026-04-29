@@ -97,7 +97,7 @@ function Input() {
       navigate('/output', { state: { result: response.data } })
     } catch (err) {
       console.error(err)
-      setError('Something went wrong while processing your request. Please try again.')
+      setError(err?.response?.data?.error || err?.response?.data?.message || err?.message || 'Something went wrong while processing your request. Please try again.')
     } finally {
       setIsSubmitting(false)
     }

@@ -57,7 +57,7 @@ function Output() {
       setPreviewHtml(baseHtml)
       setStatusMessage("Preview loaded from provided result data.")
     } catch (e) {
-      setError(e?.message || "Failed to load preview.")
+      setError(e?.response?.data?.error || e?.response?.data?.message || e?.message || "Failed to load preview.")
     } finally {
       setLoadingPreview(false)
     }
@@ -81,7 +81,7 @@ function Output() {
       setBaseHtml(html)
       setStatusMessage("Adjustment applied.")
     } catch (e) {
-      setError(e?.message || "Failed to adjust preview.")
+      setError(e?.response?.data?.error || e?.response?.data?.message || e?.message || "Failed to adjust preview.")
     } finally {
       setLoadingAdjust(false)
     }
