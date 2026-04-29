@@ -16,7 +16,16 @@ import config from "../utils/config.js"
 function Output() {
   const location = useLocation()
   const navigate = useNavigate()
-  const resultData = location?.state?.result
+  
+  const getResultData = () => {
+    if (location?.state?.result) return location.state.result;
+    try {
+      const stored = sessionStorage.getItem("hueai_result");
+      if (stored) return JSON.parse(stored);
+    } catch (e) {}
+    return null;
+  }
+  const resultData = getResultData()
 
   const backendBaseUrl = config.backendBaseUrl;
 
@@ -37,6 +46,22 @@ function Output() {
   const [viewMode, setViewMode] = useState("laptop")
   const [previewHtml, setPreviewHtml] = useState(initialPreviewHtml)
   const [baseHtml, setBaseHtml] = useState(initialPreviewHtml)
+  const [iframeSrc, setIframeSrc] = useState("")
+
+  useEffect(() => {
+    if (!previewHtml) {
+      setIframeSrc("")
+      return
+    }
+    const blob = new Blob([previewHtml], { type: "text/html;charset=utf-8" })
+    const url = URL.createObjectURL(blob)
+    setIframeSrc(url)
+
+    return () => {
+      URL.revokeObjectURL(url)
+    }
+  }, [previewHtml])
+
   const [suggestions, setSuggestions] = useState("")
   const [loadingPreview, setLoadingPreview] = useState(false)
   const [loadingAdjust, setLoadingAdjust] = useState(false)
@@ -92,7 +117,14 @@ function Output() {
     if (!previewHtml) return
     setError(null)
     setStatusMessage("Finalized.")
-    navigate('/result', { state: { html: previewHtml } })
+    try {
+      sessionStorage.setItem("hueai_final_html", previewHtml)
+    } catch (e) {}
+    try {
+      navigate('/result', { state: { html: previewHtml } })
+    } catch (e) {
+      navigate('/result')
+    }
   }
 
   useEffect(() => {
@@ -180,13 +212,14 @@ function Output() {
 
               <iframe
                 title="HTML Preview"
-                srcDoc={previewHtml || "<!doctype html><html><body></body></html>"}
+                src={iframeSrc || undefined}
                 width={Math.min(previewDimensions.width, 1200)}
                 height={previewDimensions.height}
                 className="preview-iframe"
                 style={{
                   width: `${Math.min(previewDimensions.width, 1200)}px`,
                   height: `${previewDimensions.height}px`,
+                  backgroundColor: "#ffffff"
                 }}
               />
             </div>

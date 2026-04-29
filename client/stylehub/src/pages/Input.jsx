@@ -94,7 +94,14 @@ function Input() {
       })
       const payload = { html: htmlContent, layout: selectedLayout, colorScheme: colors, fontStyle: selectedFont }
       const response = await axios.post(`${backendBaseUrl}/initiate`, payload)
-      navigate('/output', { state: { result: response.data } })
+      try {
+        sessionStorage.setItem("hueai_result", JSON.stringify(response.data))
+      } catch (e) {}
+      try {
+        navigate('/output', { state: { result: response.data } })
+      } catch (e) {
+        navigate('/output')
+      }
     } catch (err) {
       console.error(err)
       setError('Something went wrong while processing your request. Please check the file you uploaded and try again.')

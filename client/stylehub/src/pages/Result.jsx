@@ -48,7 +48,17 @@ function Result() {
 
   const backendBaseUrl = config.backendBaseUrl;
 
-  const finalHtmlFromState = location.state?.finalHtml || location.state?.html || location.state?.htmlCode
+  const getFinalHtml = () => {
+    const fromState = location.state?.finalHtml || location.state?.html || location.state?.htmlCode;
+    if (fromState) return fromState;
+    try {
+      const stored = sessionStorage.getItem("hueai_final_html");
+      if (stored) return stored;
+    } catch (e) {}
+    return null;
+  }
+
+  const finalHtmlFromState = getFinalHtml()
   const finalCssFromState = location.state?.finalCss || location.state?.css
 
   const [uploadFile, setUploadFile] = useState(null)
@@ -85,7 +95,14 @@ function Result() {
       })
       const newHtml = typeof response.data === 'string' ? response.data : ''
       if (!newHtml || newHtml.trim().length === 0) throw new Error('Server response did not include updated HTML.')
-      navigate('/output', { replace: true, state: { result: newHtml } })
+      try {
+        sessionStorage.setItem("hueai_result", JSON.stringify(newHtml))
+      } catch(e) {}
+      try {
+        navigate('/output', { replace: true, state: { result: newHtml } })
+      } catch (e) {
+        navigate('/output', { replace: true })
+      }
     } catch (err) {
       setError(err?.response?.data?.error || err?.response?.data?.message || err?.message || 'Restyle request failed.')
     } finally {
