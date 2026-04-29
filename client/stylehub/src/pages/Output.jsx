@@ -1,3 +1,7 @@
+/*
+ * Output.jsx
+ * Displays the AI-generated preview of the layout and allows the user to suggest further adjustments.
+ */
 import { useState, useEffect, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import axios from "axios"
@@ -8,6 +12,7 @@ import { WaitAnimation } from '../components/WaitAnimation'
 import '../styles/Output.css'
 import config from "../utils/config.js"
 
+// Main component to preview AI-generated designs and iteratively adjust them
 function Output() {
   const location = useLocation()
   const navigate = useNavigate()
@@ -15,6 +20,7 @@ function Output() {
 
   const backendBaseUrl = config.backendBaseUrl;
 
+  // Utility to safely extract HTML strings from different backend response structures
   const extractHtml = (data) => {
     if (!data) return ""
     if (typeof data === "string") return data
@@ -41,6 +47,7 @@ function Output() {
     ? { width: 375, height: 667 }
     : { width: 1200, height: 700 }
 
+  // Resets the preview frame to the original generated HTML
   const loadPreview = async () => {
     setError(null)
     setStatusMessage("")
@@ -56,6 +63,7 @@ function Output() {
     }
   }
 
+  // Submits user feedback to adjust the layout further using the backend
   const handleAdjust = async () => {
     setError(null)
     setStatusMessage("")
@@ -79,6 +87,7 @@ function Output() {
     }
   }
 
+  // Confirms the previewed design and proceeds to the final result page
   const handleConfirm = () => {
     if (!previewHtml) return
     setError(null)

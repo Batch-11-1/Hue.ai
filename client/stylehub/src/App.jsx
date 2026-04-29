@@ -1,3 +1,7 @@
+/*
+ * App.jsx
+ * Main application component that manages the initial landing page view and wake-up call to the backend.
+ */
 import DottedSurface from './components/DottedSurface';
 import { IntroAnimation } from './components/IntroAnimation';
 import axios from 'axios'
@@ -7,17 +11,20 @@ import './styles/App.css';
 import logo from './assets/bm-logo.png'
 import config from './utils/config';
 
+// Main App component that displays the hero section and handles initial loading states
 function App() {
   const navigate = useNavigate()
   const [showContent, setShowContent] = useState(false)
 
   const backendBaseUrl = config.backendBaseUrl;
 
+  // Wakes up the backend server on initial load
   useEffect(() => {
     const WAKE_URL = `${backendBaseUrl}/wake`;
     axios.get(WAKE_URL);
   }, [])
 
+  // Sets a timer to show the main content after 5 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowContent(true)

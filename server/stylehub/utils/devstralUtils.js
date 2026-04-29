@@ -1,5 +1,10 @@
+/*
+ * devstralUtils.js
+ * Base interface wrapper allowing backend services to transparently request OpenRouter or Mistral APIs.
+ */
 const axios = require("axios");
 
+// Executes the request against the devstral-based AI endpoint and returns completion contents
 async function callDevstral(prompt, options = {}) {
   const apiKey = (process.env.DEVSTRAL_API_KEY || "").trim().replace(/^["']|["']$/g, "");
 

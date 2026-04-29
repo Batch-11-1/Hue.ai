@@ -1,3 +1,7 @@
+/*
+ * Result.jsx
+ * Displays the finalized layout, allows downloading the HTML/CSS code, and provides an option to iterate with further styles.
+ */
 import axios from 'axios'
 import { useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -8,6 +12,7 @@ import { WaitAnimation } from '../components/WaitAnimation'
 import '../styles/Result.css'
 import config from '../utils/config.js'
 
+// Helper function to extract CSS styles from an HTML string
 function extractCssFromHtml(html) {
   if (!html) return ''
   const styleMatches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi) || []
@@ -18,6 +23,7 @@ function extractCssFromHtml(html) {
   return extracted.join('\n\n')
 }
 
+// Utility function to trigger a browser download for a generic string payload
 function downloadTextFile(filename, content, mimeType) {
   const blob = new Blob([content], { type: mimeType })
   const url = URL.createObjectURL(blob)
@@ -30,10 +36,12 @@ function downloadTextFile(filename, content, mimeType) {
   URL.revokeObjectURL(url)
 }
 
+// Reusable inline loading spinner component
 function Spinner() {
   return <span className="spinner" aria-label="Loading"></span>
 }
 
+// Main component displaying download links and options for further iteration
 function Result() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -57,6 +65,7 @@ function Result() {
 
   const canDownload = Boolean(finalHtmlFromState && typeof finalHtmlFromState === 'string' && finalHtmlFromState.trim().length > 0)
 
+  // Submits the new base HTML and previously accepted styles to iterate again with AI
   async function handleRestyleSubmit(e) {
     e.preventDefault()
     setError('')
@@ -84,6 +93,7 @@ function Result() {
     }
   }
 
+  // Downloads the currently finalized layout HTML
   function handleDownloadHtml() {
     if (!canDownload) return
     const htmlToDownload = (convertedHtml || finalHtmlFromState || '').trim()
@@ -93,6 +103,7 @@ function Result() {
 
   const htmlButtonLabel = convertedHtml ? 'Download HTML or JSX' : 'Download as single file'
 
+  // Connects to the backend to generate separate CSS representation and triggers download
   async function handleDownloadCss() {
     if (!canDownload) { setError('Final file is missing; cannot generate CSS.'); return }
     setError('')
@@ -111,6 +122,7 @@ function Result() {
     }
   }
 
+  // Takes the user back to the first step of the application
   function handleStartOver() {
     navigate('/input', { replace: true })
   }

@@ -1,3 +1,8 @@
+/*
+ * Footer.jsx
+ * This is the UI component for displaying the standard application footer.
+ */
+// Renders the bottom footer section for all layouts
 function Footer() {
   return (
     <footer

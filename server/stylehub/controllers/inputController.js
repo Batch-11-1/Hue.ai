@@ -1,5 +1,10 @@
+/*
+ * inputController.js
+ * Controller handling the initial design configuration inputs, executing an AI request to produce the first layout.
+ */
 const { callDevstral } = require("../utils/devstralUtils");
 
+// Cleans AI text responses isolating the strict HTML contents
 function extractFirstHtmlDocument(text) {
   if (typeof text !== "string") return text;
   const htmlStart = text.indexOf("<html");
@@ -9,6 +14,7 @@ function extractFirstHtmlDocument(text) {
   return text.slice(htmlStart, htmlEnd + "</html>".length);
 }
 
+// Extracts values from HTTP requests by attempting several potential keys
 function getBodyValue(reqBody, keys) {
   for (const key of keys) {
     if (reqBody && reqBody[key] !== undefined) return reqBody[key];
@@ -16,6 +22,7 @@ function getBodyValue(reqBody, keys) {
   return undefined;
 }
 
+// Assembles user requirements and prompts the AI model for an initial HTML generation
 const initiatePrompt = async (req, res) => {
   try {
     console.log("inputController.initiatePrompt called");

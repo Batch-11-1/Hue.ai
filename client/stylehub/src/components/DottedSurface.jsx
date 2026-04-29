@@ -1,7 +1,12 @@
+/*
+ * DottedSurface.jsx
+ * Provides an animated 3D dotted background surface using THREE.js.
+ */
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 // theme prop: "light" | "dark" (defaults to "dark")
+// DottedSurface component that visualizes a 3D grid of points based on theme
 function DottedSurface({ children, style, theme = 'dark', ...props }) {
   const containerRef = useRef(null);
   const rendererRef = useRef(null);
@@ -79,6 +84,7 @@ function DottedSurface({ children, style, theme = 'dark', ...props }) {
     // Animation loop
     let count = 0;
 
+    // Animate function to add wave motion to the dots
     const animate = () => {
       animationIdRef.current = requestAnimationFrame(animate);
 
@@ -100,6 +106,7 @@ function DottedSurface({ children, style, theme = 'dark', ...props }) {
     animate();
 
     // Resize handler
+    // Resize handler to adjust camera and renderer on window resize
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();

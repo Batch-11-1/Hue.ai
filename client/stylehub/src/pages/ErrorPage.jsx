@@ -1,9 +1,14 @@
+/*
+ * ErrorPage.jsx
+ * This page acts as a fallback to display routing and unexpected errors caught by React Router.
+ */
 import { Link, isRouteErrorResponse, useRouteError } from "react-router-dom";
 import Header from '../components/Navbar.jsx'
 import Footer from '../components/Footer'
 import DottedSurface from '../components/DottedSurface'
 import '../styles/ErrorPage.css'
 
+// Component that displays friendly error messages when navigation or rendering fails
 function ErrorPage() {
   const error = useRouteError();
 

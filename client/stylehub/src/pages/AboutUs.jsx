@@ -1,8 +1,13 @@
+/*
+ * AboutUs.jsx
+ * This page displays information about the team, including categorized members (backend, frontend, UI/UX).
+ */
 import Header from '../components/Navbar.jsx'
 import Footer from '../components/Footer'
 import DottedSurface from '../components/DottedSurface'
 import '../styles/AboutUs.css'
 
+// Main component rendering the entire About Us page UI with categorized developer roles
 function AboutUs() {
   const backendMembers = [
     { name: 'Renjeesh R.S (Concept)', role: 'Backend - Express', qualification: 'Mern Stack Developer', github: 'https://github.com/renjeesh-rs', linkedin: 'https://www.linkedin.com/in/renjeesh-r-s-5408b7381/' },
@@ -27,6 +32,7 @@ function AboutUs() {
     { name: 'Sahad', role: 'Logo and Animation Designer', qualification: 'Python Fullstack Developer', github: 'https://github.com/sahadnishy-css', linkedin: 'https://www.linkedin.com/in/sahad-nishy-8b116b386' },
   ]
 
+  // Local nested component for rendering an individual styling variation of a member's card
   const MemberCard = ({ member, variant }) => (
     <div className={`mc mc--${variant}`}>
       <div className="mc__glow" />
@@ -43,6 +49,7 @@ function AboutUs() {
     </div>
   )
 
+  // Local nested component rendering a decorative visual divider between team sections
   const Divider = () => (
     <div className="team-divider">
       <div className="team-divider__line" />

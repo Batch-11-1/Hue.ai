@@ -1,3 +1,7 @@
+/*
+ * Input.css
+ * Styles for the initial input form where layout, font, and color scheme are selected.
+ */
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Inter:wght@400;500&family=Roboto:wght@400;500&family=Open+Sans:wght@400;600&family=Lato:wght@400;700&family=Poppins:wght@400;500&family=DM+Sans:wght@400;500&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;600&family=Libre+Baskerville:wght@400;700&display=swap');
 
 /* ── Tokens ─────────────────────────────────────────── */

@@ -1,5 +1,10 @@
+/*
+ * repeatController.js
+ * Controller allowing users to inject a previously styled template structure onto a brand new layout structure iteratively.
+ */
 const { callDevstral } = require("../utils/devstralUtils");
 
+// Utility selecting a valid string from an object using an array of fallback keys
 const pickFirstString = (obj, keys) => {
   if (!obj || typeof obj !== 'object') return null;
   for (const key of keys) {
@@ -9,6 +14,7 @@ const pickFirstString = (obj, keys) => {
   return null;
 };
 
+// Requests the AI model to merge a styled HTML template across a secondary un-styled structure block
 const repeatPrompt = async (req, res, next) => {
   try {
     console.log("repeatController.repeatPrompt called");

@@ -1,5 +1,10 @@
+/*
+ * geminiUtils.js (currently not using)
+ * Base utility interface connecting to the Google Gemini AI models directly.
+ */
 const { GoogleGenAI } = require('@google/genai');
 
+// Generates contents with Google's Gemini Models utilizing provided prompts and execution configurations
 async function callGemini(prompt, options = {}) {
   const apiKey = process.env.GOOGLE_API_KEY;
   if (!apiKey) {

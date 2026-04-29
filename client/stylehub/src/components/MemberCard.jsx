@@ -1,3 +1,8 @@
+/*
+ * MemberCard.jsx
+ * This is a simple UI component representing a team member card.
+ */
+// Component to display an individual team member's details
 function MemberCard({ name, role, qualification, github, linkedin }) {
   return (
     <div>

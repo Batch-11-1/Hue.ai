@@ -1,3 +1,7 @@
+/*
+ * Input.jsx
+ * This page handles the initial user input, including file upload, layout selection, color scheme, and font preferences.
+ */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -8,6 +12,7 @@ import { WaitAnimation } from '../components/WaitAnimation'
 import '../styles/Input.css'
 import config from '../utils/config.js'
 
+// Main component for the input step where users upload files and choose design preferences
 function Input() {
   const navigate = useNavigate()
   const [file, setFile] = useState(null)
@@ -52,23 +57,27 @@ function Input() {
     { id: 'libre-baskerville', label: 'Libre Baskerville', css: '"Libre Baskerville", Georgia, serif' },
   ]
 
+  // Handles file selection and updates state
   const handleFileChange = (e) => {
     const uploaded = e.target.files?.[0]
     setFile(uploaded || null)
     setError('')
   }
 
+  // Adds a new color up to a maximum of 4
   const handleAddColor = () => {
     if (colors.length >= 4) return
     setColors([...colors, '#ff11d7'])
   }
 
+  // Updates a specific color in the color scheme array
   const handleColorChange = (index, value) => {
     const next = [...colors]
     next[index] = value
     setColors(next)
   }
 
+  // Submits user preferences and the uploaded file to the backend
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')

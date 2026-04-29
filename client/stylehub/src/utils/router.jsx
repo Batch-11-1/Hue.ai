@@ -1,3 +1,7 @@
+/*
+ * router.jsx
+ * Defines standard client-side routing rules using react-router-dom.
+ */
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import AboutUs from "../pages/AboutUs"

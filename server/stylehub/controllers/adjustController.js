@@ -1,5 +1,10 @@
+/*
+ * adjustController.js
+ * Controller handling user suggestions to further adjust the AI generated CSS and HTML structures.
+ */
 const { callDevstral } = require("../utils/devstralUtils");
 
+// Strips surrounding markdown code fences and extracts raw HTML
 const stripCodeFences = (text) => {
   if (typeof text !== "string") return "";
   let out = text.trim();
@@ -19,6 +24,7 @@ const stripCodeFences = (text) => {
   return out;
 };
 
+// Responds to user feedback requesting iterative layout modifications from the AI
 const adjustPrompt = async (req, res) => {
   try {
     console.log("adjustController.adjustPrompt called");

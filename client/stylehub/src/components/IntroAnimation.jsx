@@ -1,11 +1,17 @@
+/*
+ * IntroAnimation.jsx
+ * Component to display the hero load animation of the logo halves.
+ */
 import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import halfpart from '../assets/halfpart.png'
 
+// Component to display the animated introduction
 export function IntroAnimation() {
   const imageRef = useRef(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
+  // Handler for when the image successfully loads to calculate dimensions
   function handleImageLoad() {
     if (imageRef.current) {
       setDimensions({

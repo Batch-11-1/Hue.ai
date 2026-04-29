@@ -1,11 +1,17 @@
+/*
+ * WaitAnimation.jsx
+ * Provides a continuous loading animation for wait screens (e.g., while waiting for API responses).
+ */
 import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import halfpart from '../assets/halfpart.png'
 
+// Component displaying an infinite looping loading animation using rotating halves
 export function WaitAnimation() {
   const imageRef = useRef(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
+  // Handler for image component loading to update element layout tracking
   function handleImageLoad() {
     if (imageRef.current) {
       setDimensions({

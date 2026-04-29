@@ -1,7 +1,12 @@
+/*
+ * Navbar.jsx
+ * Navigation bar component with a responsive design, animations, and hover effects.
+ */
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Renders the main top navigation bar of the application
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
@@ -26,6 +31,7 @@ function Navbar() {
     display: 'block',
   };
 
+  // Applies styling effects when linking is hovered
   const applyHover = (e) => {
     e.currentTarget.style.transform = 'translateY(-6px) scale(1.02)';
     e.currentTarget.style.borderColor = '#7e3bed';
@@ -34,6 +40,7 @@ function Navbar() {
     e.currentTarget.style.color = '#7e3bed';
   };
 
+  // Resets styling effects when mouse leaves the link
   const resetHover = (e) => {
     e.currentTarget.style.transform = 'translateY(0) scale(1)';
     e.currentTarget.style.borderColor = 'transparent';
@@ -42,7 +49,9 @@ function Navbar() {
     e.currentTarget.style.color = '#F0F4F5';
   };
 
+  // Shrinks the link size slightly when clicked
   const handleMouseDown = (e) => { e.currentTarget.style.transform = 'scale(0.95)'; };
+  // Restores the previous styling state when the mouse click is released
   const handleMouseUp   = (e) => { if (e.currentTarget.matches(':hover')) applyHover(e); else resetHover(e); };
 
   const navLinks = [

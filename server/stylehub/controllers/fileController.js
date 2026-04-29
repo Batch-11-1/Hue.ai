@@ -1,9 +1,7 @@
 /*
-The req.body contains the html file that the user wants to convert and download.
-
-We extract any internal CSS from <style>...</style> blocks into a standalone
-CSS file, then rewrite the HTML to link the generated CSS file.
-*/
+ * fileController.js
+ * Controller handling the extraction of inline CSS from finished layouts and converting it into downloadable CSS files.
+ */
 
 /**
  * Tries to locate the incoming HTML string from a urlencoded form body.
@@ -35,6 +33,7 @@ const getHtmlFromRequest = (req) => {
   return null;
 };
 
+// Main handler extracting CSS content from a generated HTML representation
 const fileDownload = (req, res) => {
   try {
     const html = getHtmlFromRequest(req);

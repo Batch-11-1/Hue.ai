@@ -1,3 +1,7 @@
+/*
+ * indexRouter.js
+ * Definition map for API routes matching endpoints to their required controllers.
+ */
 const { Router } = require("express");
 const adjustController = require("../controllers/adjustController");
 const fileController = require("../controllers/fileController");
