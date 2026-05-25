@@ -221,6 +221,7 @@ function Output() {
                   height: `${previewDimensions.height}px`,
                   backgroundColor: "#ffffff"
                 }}
+                sandbox="allow-scripts"
               />
             </div>
           </div>
